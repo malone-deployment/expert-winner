@@ -64,7 +64,7 @@ jobs:
         with:
           workload_identity_provider: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
 
-      # BEGIN - Docker auth and builds
+      # BEGIN - Docker auth and buildss
       #
       # If you already have a container image, you can omit these steps.ka
       - name: "Docker Auth"
