@@ -37,7 +37,7 @@ on:
 env:
   PROJECT_ID: "rpi-hub-438905"
   REGION: "asia-southeast1"
-  SERVICE: "estavillofretz-developer@rpi-hub-438905.iam.gserviceaccount.com"
+  SERVICE: "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com"
   WORKLOAD_IDENTITY_POOL_ID: "projects/422041495987/locations/global/workloadIdentityPools/github"
   WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github/providers/my-repo"
   REPO: "malone-deployment/expert-winner"
