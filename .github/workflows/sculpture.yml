@@ -27,95 +27,70 @@
 #
 # 3. Change the values in the "env" block to match your values.
 
-# env:
-#   IMAGE_NAME: "sculpturelist"
-#   PROJECT_ID: "rpi-hub-438905"
-#   AR_REPO_LOCATION: "asia-southeast1"
-#   AR_URL: "asia-southeast1-docker.pkg.dev/rpi-hub-438905/piso-wifi-repository"
-#   SERVICE_ACCOUNT: "estavillofretz-developer@rpi-hub-438905.iam.gserviceaccount.com"
-#   WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/sculpture-pool-id/providers/github-actions-provider-id"
-#   GITHUB_REPO_OWNER: "malone-deployment"
-#   GITHUB_REPO_NAME: "sculpture-list"
+name: "Build and Deploy to Cloud Run"
 
-# name: "Build and Deploy to Cloud Run"
+on:
+  push:
+    branches:
+      - '"main"'
 
-# on:
-#   push:
-#     branches:
-#       - '"main"'
+env:
+  PROJECT_ID: "rpi-hub-438905"
+  REGION: "asia-southeast1"
+  SERVICE: "estavillofretz-developer@rpi-hub-438905.iam.gserviceaccount.com"
+  WORKLOAD_IDENTITY_POOL_ID: "projects/422041495987/locations/global/workloadIdentityPools/github"
+  WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github/providers/my-repo"
+  REPO: "malone-deployment/expert-winner"
 
-# env:
-#   PROJECT_ID: "rpi-hub-438905" # TODO: update to your Google Cloud project ID
-#   REGION: "asia-southeast1" # TODO: update to your region
-#   SERVICE: "estavillofretz-developer@rpi-hub-438905.iam.gserviceaccount.com" # TODO: update to your service name
-#   WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/sculpture-pool-id/providers/github-actions-provider-id" # TODO: update to your workload identity provider
+jobs:
+  deploy:
+    runs-on: "ubuntu-latest"
 
-#   projects/422041495987/locations/global/workloadIdentityPools/github
-#   assertion.repository_owner == 'my-github-org'
+    permissions:
+      contents: "read"
+      id-token: "write"
 
-# # TODO: replace ${PROJECT_ID} with your value below.
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332" # actions/checkout@v4
 
-# gcloud iam workload-identity-pools create "github" \
-#   --project="rpi-hub-438905" \
-#   --location="global" \
-#   --display-name="GitHub Actions Pool"
+      # Configure Workload Identity Federation and generate an access token.
+      #
+      # See https://github.com/google-github-actions/auth for more options,
+      # including authenticating via a JSON credentials file.
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@f112390a2df9932162083945e46d439060d66ec2" # google-github-actions/auth@v2
+        with:
+          workload_identity_provider: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
 
-#   # TODO: replace ${PROJECT_ID} with your value below.
+      # BEGIN - Docker auth and build
+      #
+      # If you already have a container image, you can omit these steps.
+      - name: "Docker Auth"
+        uses: "docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567" # docker/login-action@v3
+        with:
+          username: "oauth2accesstoken"
+          password: "${{ steps.auth.outputs.auth_token }}"
+          registry: "${{ env.REGION }}-docker.pkg.dev"
 
-# gcloud iam workload-identity-pools describe "github" \
-#   --project="rpi-hub-438905" \
-#   --location="global" \
-#   --format="value(name)"
+      - name: "Build and Push Container"
+        run: |-
+          DOCKER_TAG="$${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
+          docker build --tag "${DOCKER_TAG}" .
+          docker push "${DOCKER_TAG}"
+      - name: "Deploy to Cloud Run"
+        # END - Docker auth and build
 
-# jobs:
-#   deploy:
-#     runs-on: "ubuntu-latest"
+        uses: "google-github-actions/deploy-cloudrun@33553064113a37d688aa6937bacbdc481580be17" # google-github-actions/deploy-cloudrun@v2
+        with:
+          service: "${{ env.SERVICE }}"
+          region: "${{ env.REGION }}"
+          # NOTE: If using a pre-built image, update the image name below:
 
-#     permissions:
-#       contents: "read"
-#       id-token: "write"
+          image: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
+      # If required, use the Cloud Run URL output in later steps
+      - name: "Show output"
+        run: |2-
 
-#     steps:
-#       - name: "Checkout"
-#         uses: "actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332" # actions/checkout@v4
-
-#       # Configure Workload Identity Federation and generate an access token.
-#       #
-#       # See https://github.com/google-github-actions/auth for more options,
-#       # including authenticating via a JSON credentials file.
-#       - id: "auth"
-#         name: "Authenticate to Google Cloud"
-#         uses: "google-github-actions/auth@f112390a2df9932162083945e46d439060d66ec2" # google-github-actions/auth@v2
-#         with:
-#           workload_identity_provider: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
-
-#       # BEGIN - Docker auth and build
-#       #
-#       # If you already have a container image, you can omit these steps.
-#       - name: "Docker Auth"
-#         uses: "docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567" # docker/login-action@v3
-#         with:
-#           username: "oauth2accesstoken"
-#           password: "${{ steps.auth.outputs.auth_token }}"
-#           registry: "${{ env.REGION }}-docker.pkg.dev"
-
-#       - name: "Build and Push Container"
-#         run: |-
-#           DOCKER_TAG="$${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
-#           docker build --tag "${DOCKER_TAG}" .
-#           docker push "${DOCKER_TAG}"
-#       - name: "Deploy to Cloud Run"
-#         # END - Docker auth and build
-
-#         uses: "google-github-actions/deploy-cloudrun@33553064113a37d688aa6937bacbdc481580be17" # google-github-actions/deploy-cloudrun@v2
-#         with:
-#           service: "${{ env.SERVICE }}"
-#           region: "${{ env.REGION }}"
-#           # NOTE: If using a pre-built image, update the image name below:
-
-#           image: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
-#       # If required, use the Cloud Run URL output in later steps
-#       - name: "Show output"
-#         run: |2-
-
-#           echo ${{ steps.deploy.outputs.url }}
+          echo ${{ steps.deploy.outputs.url }}
