@@ -76,10 +76,10 @@ jobs:
 
       - name: "Build and Push Container"
         run: |-
-           run: |
-          gcloud auth configure-docker asia-southeast1-docker.pkg.dev
-          docker build -t asia-southeast1-docker.pkg.dev/rpi-hub-438905/piso-wifi-repository:${{ github.sha }}
-          docker push asia-southeast1-docker.pkg.dev/rpi-hub-438905/piso-wifi-repository:${{ github.sha }}
+          run: |
+           gcloud auth configure-docker asia-southeast1-docker.pkg.dev
+           docker build -t asia-southeast1-docker.pkg.dev/rpi-hub-438905/piso-wifi-repository:${{ github.sha }}
+           docker push asia-southeast1-docker.pkg.dev/rpi-hub-438905/piso-wifi-repository:${{ github.sha }}
 
         #   DOCKER_TAG="asia-southeast1-docker.pkg.dev/rpi-hub-438905/piso-wifi-repository:${{ github.sha }}"
         #   docker build --tag "${DOCKER_TAG}" .
