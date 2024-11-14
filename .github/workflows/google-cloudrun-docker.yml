@@ -41,7 +41,7 @@ env:
   WORKLOAD_IDENTITY_POOL_ID: "projects/422041495987/locations/global/workloadIdentityPools/github"
   WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github/providers/my-repo"
   REPO: "malone-deployment/expert-winner"
-  REPOSITORY_NAME: "ci-cd-test-repository"
+  REPOSITORY_NAME: "piso-wifi-repository"
 
 jobs:
   deploy:
@@ -77,6 +77,7 @@ jobs:
 
       - name: "Build and Push Container"
         run: |-
+
           DOCKER_TAG="$${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY_NAME }}:${{ github.sha }}"
           docker build --tag "${DOCKER_TAG}" .
           docker push "${DOCKER_TAG}"
