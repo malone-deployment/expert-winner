@@ -42,6 +42,7 @@ env:
   WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github/providers/my-repo"
   REPO: "malone-deployment/expert-winner"
   REPOSITORY_NAME: "piso-wifi-repository"
+  IMAGE_NAME: "sculpturelist"
 
 jobs:
   deploy:
@@ -70,7 +71,7 @@ jobs:
 
       - name: "Build and Push Container"
         run: |-
-          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY_NAME }}/testimage:${{ github.sha }}"
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
           echo "DOCKER_TAG=${DOCKER_TAG}" # Debugging step
           docker build --tag "${DOCKER_TAG}" .
           docker push "${DOCKER_TAG}"
