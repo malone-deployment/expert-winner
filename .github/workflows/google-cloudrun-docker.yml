@@ -76,8 +76,8 @@ jobs:
 
       - name: "Build and Push Container"
         run: |-
-          DOCKER_TAG="asia-southeast1-docker.pkg.dev/rpi-hub-438905/piso-wifi-repository:v1"
-          docker build -t "${DOCKER_TAG}"
+          DOCKER_TAG="$${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
+          docker build --tag "${DOCKER_TAG}" .
           docker push "${DOCKER_TAG}"
 
         #    gcloud auth configure-docker asia-southeast1-docker.pkg.dev
