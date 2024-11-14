@@ -43,7 +43,7 @@ jobs:
           registry: "${{ env.REGION }}-docker.pkg.dev"
 
       - name: 'Build and Push Container'
-            run: |-
+          run: |-
             DOCKER_TAG="$${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/piso-wifi-repository/sculpturelist:${{ github.sha }}"
             docker build --tag "${DOCKER_TAG}" .
             docker push "${DOCKER_TAG}"
