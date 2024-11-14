@@ -41,6 +41,7 @@ env:
   WORKLOAD_IDENTITY_POOL_ID: "projects/422041495987/locations/global/workloadIdentityPools/github"
   WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github/providers/my-repo"
   REPO: "malone-deployment/expert-winner"
+  REPOSITORY_NAME: "ci-cd-test-repository"
 
 jobs:
   deploy:
@@ -76,13 +77,9 @@ jobs:
 
       - name: "Build and Push Container"
         run: |-
-          DOCKER_TAG="$${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
+          DOCKER_TAG="$${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY_NAME }}:${{ github.sha }}"
           docker build --tag "${DOCKER_TAG}" .
           docker push "${DOCKER_TAG}"
-
-        #    gcloud auth configure-docker asia-southeast1-docker.pkg.dev
-        #    docker build --tag asia-southeast1-docker.pkg.dev/rpi-hub-438905/piso-wifi-repository:v1 .
-        #    docker push asia-southeast1-docker.pkg.dev/rpi-hub-438905/piso-wifi-repository:v1
 
       - name: "Deploy to Cloud Run"
         # END - Docker auth and buildsssss
