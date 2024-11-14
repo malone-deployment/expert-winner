@@ -43,6 +43,8 @@ env:
   REPO: "malone-deployment/expert-winner"
   REPOSITORY_NAME: "piso-wifi-repository"
   IMAGE_NAME: "sculpturelist"
+  SERVICE_EMAIL: "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com"
+  SERVICE_NAME: "estavillofretz-developer@rpi-hub-438905.iam.gserviceaccount.com"
 
 jobs:
   deploy:
