@@ -54,7 +54,8 @@ jobs:
         with:
           service: "${{ env.SERVICE }}"
           region: "${{ env.REGION }}"
-          image: "${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          #   image: "${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          image: "asia-southeast1-docker.pkg.dev/rpi-hub-438905/piso-wifi-repository/sculpturelist:latest1"
 
       - name: "Show output"
         run: |
