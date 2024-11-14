@@ -1,11 +1,10 @@
-  #   - name: 'Deploy to Cloud Run'
-    #   - id: docker-push-tagged
-    #     name: Tag Docker image and push to Google Artifact Registry
-    #     uses: docker/build-push-action@v2
-    #     with:
-    #       push: true
-    #       tags: "${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
-
+#   - name: 'Deploy to Cloud Run'
+#   - id: docker-push-tagged
+#     name: Tag Docker image and push to Google Artifact Registry
+#     uses: docker/build-push-action@v2
+#     with:
+#       push: true
+#       tags: "${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
 
 name: "Build and Deploy to Cloud Run"
 
@@ -51,13 +50,11 @@ jobs:
           password: "${{ steps.auth.outputs.auth_token }}"
           registry: "${{ env.REGION }}-docker.pkg.dev"
 
-      - name: 'Build and Push Container'
-          run: |-
-            DOCKER_TAG="$${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/piso-wifi-repository/sculpturelist:${{ github.sha }}"
-            docker build --tag "${DOCKER_TAG}" .
-            docker push "${DOCKER_TAG}"
-
-  
+      - name: "Build and Push Container"
+        run: |-
+          DOCKER_TAG="$${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/piso-wifi-repository/sculpturelist:${{ github.sha }}"
+          docker build --tag "${DOCKER_TAG}" .
+          docker push "${DOCKER_TAG}"
 
       - name: "Deploy to Cloud Run"
         uses: "google-github-actions/deploy-cloudrun@v2"
@@ -66,7 +63,6 @@ jobs:
           region: "${{ env.REGION }}"
           #   image: "${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
           image: "${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
-
 
       - name: "Show output"
         run: |
