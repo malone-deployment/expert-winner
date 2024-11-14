@@ -42,7 +42,7 @@ env:
   WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github/providers/my-repo"
   REPO: "malone-deployment/expert-winner"
   REPOSITORY_NAME: "piso-wifi-repository"
-  IMAGE_NAME: "sculpturelist"
+  IMAGE_NAME: "bitch-image"
   SERVICE_EMAIL: "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com"
   SERVICE_NAME: "estavillofretz-developer@rpi-hub-438905.iam.gserviceaccount.com"
 
