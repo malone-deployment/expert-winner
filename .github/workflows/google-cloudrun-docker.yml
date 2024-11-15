@@ -89,7 +89,7 @@ jobs:
 
         uses: "google-github-actions/deploy-cloudrun@33553064113a37d688aa6937bacbdc481580be17" # google-github-actions/deploy-cloudrun@v2
         with:
-          service: "my-service"
+          service: "bitch-image"
           region: "${{ env.REGION }}"
           image: "${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
         # If required, use the Cloud Run URL output in later stepss
