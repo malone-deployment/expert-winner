@@ -25,7 +25,7 @@
 #    You can learn more about setting IAM permissions at
 #    https://cloud.google.com/iam/docs/manage-access-other-resources
 #
-# 3. Change the values in the "env" block to match your values.s
+# 3. Change the values in the "env" block to match your values.
 
 name: "Build and Deploy to Cloud Run"
 
@@ -35,16 +35,10 @@ on:
       - main
 
 env:
-  PROJECT_ID: "rpi-hub-438905"
-  REGION: "asia-southeast1"
-  SERVICE: "my-service" # TODO: update to your service name
-  SERVICE_NAME: "estavillofretz-developer@rpi-hub-438905.iam.gserviceaccount.com"
-  SERVICE_EMAIL: "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com"
-  WORKLOAD_IDENTITY_POOL_ID: "projects/422041495987/locations/global/workloadIdentityPools/github-one"
-  WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github-one/providers/my-repo"
-  REPO: "malone-deployment/expert-winner"
-  REPOSITORY_NAME: "test-repository"
-  IMAGE_NAME: "bitch-image"
+  PROJECT_ID: "rpi-hub-438905" # TODO: update to your Google Cloud project ID
+  REGION: "asia-southeast1" # TODO: update to your region
+  SERVICE_EMAIL: "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com" # TODO: update to your service email
+  WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github-one/providers/my-repo" # TODO: update to your workload identity provider
 
 jobs:
   deploy:
@@ -64,19 +58,28 @@ jobs:
       # including authenticating via a JSON credentials file.
       - id: "auth"
         name: "Authenticate to Google Cloud"
-        uses: "google-github-actions/auth@v2" # google-github-actions/auth@v2
+        uses: "google-github-actions/auth@f112390a2df9932162083945e46d439060d66ec2" # google-github-actions/auth@v2
         with:
           project_id: "${{ env.PROJECT_ID }}"
           service_account: "${{ env.SERVICE_EMAIL }}"
           workload_identity_provider: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
 
+      # BEGIN - Docker auth and build
+      #
+      # If you already have a container image, you can omit these steps.
+      - name: "Docker Auth"
+        uses: "docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567" # docker/login-action@v3
+        with:
+          username: "oauth2accesstoken"
+          password: "${{ steps.auth.outputs.auth_token }}"
+          registry: "${{ env.REGION }}-docker.pkg.dev"
+
       - name: "Build and Push Container"
         run: |-
-          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"  
+          DOCKER_TAG="$${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
           docker build . -t "${DOCKER_TAG}"
-          gcloud auth configure-docker asia-southeast1-docker.pkg.dev
+          gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
           docker push "${DOCKER_TAG}"
-
       - name: "Deploy to Cloud Run"
         # END - Docker auth and build
 
@@ -92,97 +95,3 @@ jobs:
         run: |2-
 
           echo ${{ steps.deploy.outputs.url }}
-
-#############################################################################################
-
-#   PROJECT_ID: "rpi-hub-438905"
-#   REGION: "asia-southeast1"
-#   SERVICE: "my-cloud-run-service" # Cloud Run service name
-#   WORKLOAD_IDENTITY_POOL_ID: "projects/422041495987/locations/global/workloadIdentityPools/github-one"
-#   WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github-one/providers/my-repo"
-#   REPO: "malone-deployment/expert-winner"
-#   REPOSITORY_NAME: "test-repository"
-#   IMAGE_NAME: "bitch-image"
-#   SERVICE_EMAIL: "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com"
-#   SERVICE_NAME: "estavillofretz-developer@rpi-hub-438905.iam.gserviceaccount.com"
-
-# assertion.repository_owner == 'malone-deployment'
-# curl -sfL -H "Accept: application/json" "https://api.github.com/orgs/malone-deployment" | jq .id
-# 188343101
-# curl -sfL -H "Accept: application/json" "https://api.github.com/repos/malone-deployment/expert-winner" | jq .id
-# 888032951
-
-# assertion.repository_owner_id == '188343101' && assertion.repository_id == '888032951'
-
-# # TODO: replace ${PROJECT_ID} with your value below.
-
-# gcloud iam workload-identity-pools create "github-one" \
-#   --project="rpi-hub-438905" \
-#   --location="global" \
-#   --display-name="GitHub Actions Pool"
-
-# gcloud iam workload-identity-pools describe "github-one" \
-#   --project="rpi-hub-438905" \
-#   --location="global" \
-#   --format="value(name)"
-
-# # TODO: replace ${PROJECT_ID} and ${GITHUB_ORG} with your values below.
-
-# gcloud iam workload-identity-pools providers create-oidc "my-repo" \
-#   --project="rpi-hub-438905" \
-#   --location="global" \
-#   --workload-identity-pool="github-one" \
-#   --display-name="My GitHub repo Provider" \
-#   --attribute-mapping="google.subject=assertion.sub,attribute.actor=assertion.actor,attribute.repository=assertion.repository,attribute.repository_owner=assertion.repository_owner" \
-#   --attribute-condition="assertion.repository_owner_id == '188343101' && assertion.repository_id == '888032951'" \
-#   --issuer-uri="https://token.actions.githubusercontent.com"
-
-# gcloud iam workload-identity-pools providers describe "my-repo" \
-#   --project="rpi-hub-438905" \
-#   --location="global" \
-#   --workload-identity-pool="github-one" \
-#   --format="value(name)"
-
-# gcloud secrets add-iam-policy-binding "my-secret" \
-#   --project="rpi-hub-438905" \
-#   --role="roles/secretmanager.secretAccessor" \
-#   --member="principalSet://iam.googleapis.com/projects/422041495987/locations/global/workloadIdentityPools/github-one/attribute.repository/malone-deployment/expert-winner"
-
-# WORKLOAD_IDENTITY_POOL_ID: "projects/422041495987/locations/global/workloadIdentityPools/github-one"
-#   WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github-one/providers/my-repo"
-
-# TODO: replace ${PROJECT_ID}, ${WORKLOAD_IDENTITY_POOL_ID}, and ${REPO}
-# with your values below.
-#
-# ${REPO} is the full repo name including the parent GitHub organization,
-# such as "my-org/my-repo".
-#
-# ${WORKLOAD_IDENTITY_POOL_ID} is the full pool id, such as
-# "projects/123456789/locations/global/workloadIdentityPools/github".
-
-# SERVICE_NAME: "estavillofretz-developer@rpi-hub-438905.iam.gserviceaccount.com"
-#   SERVICE_EMAIL: "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com"
-
-# gcloud iam service-accounts add-iam-policy-binding "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com" \
-#   --project="rpi-hub-438905" \
-#   --role="roles/iam.workloadIdentityUser" \
-#   --member="principalSet://iam.googleapis.com/projects/422041495987/locations/global/workloadIdentityPools/github-one/attribute.repository/malone-deployment/expert-winner"
-
-# TODO: replace ${PROJECT_ID} with your value below.
-
-# gcloud iam workload-identity-pools providers describe "my-repo" \
-#   --project="rpi-hub-438905" \
-#   --location="global" \
-#   --workload-identity-pool="github-one" \
-#   --format="value(name)"
-
-# TODO: replace ${PROJECT_ID} with your value below.
-
-# gcloud secrets add-iam-policy-binding "my-secret" \
-#   --project="rpi-hub-438905" \
-#   --role="roles/secretmanager.secretAccessor" \
-#   --member="serviceAccount:estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com"
-# gcloud secrets add-iam-policy-binding "my-secret" \
-#   --project="rpi-hub-438905" \
-#   --role="roles/secretmanager.secretAccessor" \
-#   --member="principalSet://iam.googleapis.com/projects/422041495987/locations/global/workloadIdentityPools/github-one/attribute.repository/malone-deployment/expert-winner"
