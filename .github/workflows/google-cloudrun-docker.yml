@@ -74,6 +74,7 @@ jobs:
         run: |-
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"  
           docker build . -t "${DOCKER_TAG}"
+          gcloud auth configure-docker asia-southeast1-docker.pkg.dev
           docker push "${DOCKER_TAG}"
 
       - name: "Deploy to Cloud Run"
