@@ -67,6 +67,7 @@ jobs:
         uses: "google-github-actions/auth@f112390a2df9932162083945e46d439060d66ec2" # google-github-actions/auth@v2
         with:
           project_id: "${{ env.PROJECT_ID }}"
+          SERVICE_EMAIL: "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com"
           workload_identity_provider: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
 
       # BEGIN - Docker auth and build
@@ -157,3 +158,40 @@ jobs:
 
 # WORKLOAD_IDENTITY_POOL_ID: "projects/422041495987/locations/global/workloadIdentityPools/github-one"
 #   WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github-one/providers/my-repo"
+
+# TODO: replace ${PROJECT_ID}, ${WORKLOAD_IDENTITY_POOL_ID}, and ${REPO}
+# with your values below.
+#
+# ${REPO} is the full repo name including the parent GitHub organization,
+# such as "my-org/my-repo".
+#
+# ${WORKLOAD_IDENTITY_POOL_ID} is the full pool id, such as
+# "projects/123456789/locations/global/workloadIdentityPools/github".
+
+# SERVICE_NAME: "estavillofretz-developer@rpi-hub-438905.iam.gserviceaccount.com"
+#   SERVICE_EMAIL: "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com"
+
+# gcloud iam service-accounts add-iam-policy-binding "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com" \
+#   --project="rpi-hub-438905" \
+#   --role="roles/iam.workloadIdentityUser" \
+#   --member="principalSet://iam.googleapis.com/projects/422041495987/locations/global/workloadIdentityPools/github-one/attribute.repository/malone-deployment/expert-winner"
+
+# TODO: replace ${PROJECT_ID} with your value below.
+
+# gcloud iam workload-identity-pools providers describe "my-repo" \
+#   --project="rpi-hub-438905" \
+#   --location="global" \
+#   --workload-identity-pool="github-one" \
+#   --format="value(name)"
+
+# TODO: replace ${PROJECT_ID} with your value below.
+
+# gcloud secrets add-iam-policy-binding "my-secret" \
+#   --project="rpi-hub-438905" \
+#   --role="roles/secretmanager.secretAccessor" \
+#   --member="serviceAccount:estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com"
+
+# gcloud secrets add-iam-policy-binding "my-secret" \
+#   --project="rpi-hub-438905" \
+#   --role="roles/secretmanager.secretAccessor" \
+#   --member="principalSet://iam.googleapis.com/projects/422041495987/locations/global/workloadIdentityPools/github-one/attribute.repository/malone-deployment/expert-winner"
