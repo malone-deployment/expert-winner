@@ -69,7 +69,6 @@ jobs:
         with:
           token_format: access_token
           project_id: "${{ env.PROJECT_ID }}"
-          token_format: access_token
           SERVICE_EMAIL: "${{ env.SERVICE_EMAIL }}"
           workload_identity_provider: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
 
