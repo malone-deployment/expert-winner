@@ -92,7 +92,7 @@ jobs:
           service: "bitch-image"
           region: "${{ env.REGION }}"
           image: "${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
-        # If required, use the Cloud Run URL output in later stepss
+        # If required, use the Cloud Run URL output in later steps
       - name: "Show output"
         run: |2-
 
