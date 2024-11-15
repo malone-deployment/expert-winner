@@ -67,7 +67,7 @@ jobs:
         uses: "google-github-actions/auth@v2" # google-github-actions/auth@v2
         with:
           project_id: "${{ env.PROJECT_ID }}"
-          service_account: "${{ env.SERVICE_EMAIL }}"
+          #   service_account: "${{ env.SERVICE_EMAIL }}"
           workload_identity_provider: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
 
       - name: "Build and Push Container"
