@@ -36,7 +36,7 @@ on:
 
 env:
   PROJECT_ID: "rpi-hub-438905" # TODO: update to your Google Cloud project ID
-  REGION: "asia-southeast1" # TODO: update to your region
+  REGION: "asia-southeast1" # TODO: update to your regions
   SERVICE_EMAIL: "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com" # TODO: update to your service email
   WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github-one/providers/my-repo" # TODO: update to your workload identity provider
   REPOSITORY_NAME: "test-repository"
