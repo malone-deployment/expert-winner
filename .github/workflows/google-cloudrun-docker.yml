@@ -80,8 +80,9 @@ jobs:
 
       - name: "Build and Push Container"
         run: |-
+
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"  
-          docker build --tag "${DOCKER_TAG}" .
+          docker build . -tag "${DOCKER_TAG}"
           docker push "${DOCKER_TAG}"
       - name: "Deploy to Cloud Run"
         # END - Docker auth and builds
