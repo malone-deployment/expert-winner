@@ -32,7 +32,7 @@ name: "Build and Deploy to Cloud Run"
 on:
   push:
     branches:
-      - '"main"'
+      - "main"
 
 env:
   SERVICE: "my-service" # TODO: update to your service name
@@ -105,67 +105,67 @@ jobs:
 
 #############################################################################################
 
-  PROJECT_ID: "rpi-hub-438905"
-  REGION: "asia-southeast1"
-  SERVICE: "my-cloud-run-service" # Cloud Run service name
-  WORKLOAD_IDENTITY_POOL_ID: "projects/422041495987/locations/global/workloadIdentityPools/github-one"
-  WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github-one/providers/my-repo"
-  REPO: "malone-deployment/expert-winner"
-  REPOSITORY_NAME: "test-repository"
-  IMAGE_NAME: "bitch-image"
-  SERVICE_EMAIL: "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com"
-  SERVICE_NAME: "estavillofretz-developer@rpi-hub-438905.iam.gserviceaccount.com"
+#   PROJECT_ID: "rpi-hub-438905"
+#   REGION: "asia-southeast1"
+#   SERVICE: "my-cloud-run-service" # Cloud Run service name
+#   WORKLOAD_IDENTITY_POOL_ID: "projects/422041495987/locations/global/workloadIdentityPools/github-one"
+#   WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github-one/providers/my-repo"
+#   REPO: "malone-deployment/expert-winner"
+#   REPOSITORY_NAME: "test-repository"
+#   IMAGE_NAME: "bitch-image"
+#   SERVICE_EMAIL: "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com"
+#   SERVICE_NAME: "estavillofretz-developer@rpi-hub-438905.iam.gserviceaccount.com"
 
 
-assertion.repository_owner == 'malone-deployment'
-curl -sfL -H "Accept: application/json" "https://api.github.com/orgs/malone-deployment" | jq .id
-188343101
-curl -sfL -H "Accept: application/json" "https://api.github.com/repos/malone-deployment/expert-winner" | jq .id
-888032951
+# assertion.repository_owner == 'malone-deployment'
+# curl -sfL -H "Accept: application/json" "https://api.github.com/orgs/malone-deployment" | jq .id
+# 188343101
+# curl -sfL -H "Accept: application/json" "https://api.github.com/repos/malone-deployment/expert-winner" | jq .id
+# 888032951
 
 
-assertion.repository_owner_id == '188343101' && assertion.repository_id == '888032951'
+# assertion.repository_owner_id == '188343101' && assertion.repository_id == '888032951'
 
-# TODO: replace ${PROJECT_ID} with your value below.
+# # TODO: replace ${PROJECT_ID} with your value below.
 
-gcloud iam workload-identity-pools create "github-one" \
-  --project="rpi-hub-438905" \
-  --location="global" \
-  --display-name="GitHub Actions Pool"
+# gcloud iam workload-identity-pools create "github-one" \
+#   --project="rpi-hub-438905" \
+#   --location="global" \
+#   --display-name="GitHub Actions Pool"
 
-gcloud iam workload-identity-pools describe "github-one" \
-  --project="rpi-hub-438905" \
-  --location="global" \
-  --format="value(name)"
+# gcloud iam workload-identity-pools describe "github-one" \
+#   --project="rpi-hub-438905" \
+#   --location="global" \
+#   --format="value(name)"
 
-# TODO: replace ${PROJECT_ID} and ${GITHUB_ORG} with your values below.
-
-
-gcloud iam workload-identity-pools providers create-oidc "my-repo" \
-  --project="rpi-hub-438905" \
-  --location="global" \
-  --workload-identity-pool="github-one" \
-  --display-name="My GitHub repo Provider" \
-  --attribute-mapping="google.subject=assertion.sub,attribute.actor=assertion.actor,attribute.repository=assertion.repository,attribute.repository_owner=assertion.repository_owner" \
-  --attribute-condition="assertion.repository_owner_id == '188343101' && assertion.repository_id == '888032951'" \
-  --issuer-uri="https://token.actions.githubusercontent.com"
+# # TODO: replace ${PROJECT_ID} and ${GITHUB_ORG} with your values below.
 
 
-
-
-gcloud iam workload-identity-pools providers describe "my-repo" \
-  --project="rpi-hub-438905" \
-  --location="global" \
-  --workload-identity-pool="github-one" \
-  --format="value(name)"
+# gcloud iam workload-identity-pools providers create-oidc "my-repo" \
+#   --project="rpi-hub-438905" \
+#   --location="global" \
+#   --workload-identity-pool="github-one" \
+#   --display-name="My GitHub repo Provider" \
+#   --attribute-mapping="google.subject=assertion.sub,attribute.actor=assertion.actor,attribute.repository=assertion.repository,attribute.repository_owner=assertion.repository_owner" \
+#   --attribute-condition="assertion.repository_owner_id == '188343101' && assertion.repository_id == '888032951'" \
+#   --issuer-uri="https://token.actions.githubusercontent.com"
 
 
 
-gcloud secrets add-iam-policy-binding "my-secret" \
-  --project="rpi-hub-438905" \
-  --role="roles/secretmanager.secretAccessor" \
-  --member="principalSet://iam.googleapis.com/projects/422041495987/locations/global/workloadIdentityPools/github-one/attribute.repository/malone-deployment/expert-winner"
+
+# gcloud iam workload-identity-pools providers describe "my-repo" \
+#   --project="rpi-hub-438905" \
+#   --location="global" \
+#   --workload-identity-pool="github-one" \
+#   --format="value(name)"
 
 
-WORKLOAD_IDENTITY_POOL_ID: "projects/422041495987/locations/global/workloadIdentityPools/github-one"
-  WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github-one/providers/my-repo"
+
+# gcloud secrets add-iam-policy-binding "my-secret" \
+#   --project="rpi-hub-438905" \
+#   --role="roles/secretmanager.secretAccessor" \
+#   --member="principalSet://iam.googleapis.com/projects/422041495987/locations/global/workloadIdentityPools/github-one/attribute.repository/malone-deployment/expert-winner"
+
+
+# WORKLOAD_IDENTITY_POOL_ID: "projects/422041495987/locations/global/workloadIdentityPools/github-one"
+#   WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github-one/providers/my-repo"
