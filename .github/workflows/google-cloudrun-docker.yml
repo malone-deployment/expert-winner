@@ -89,7 +89,8 @@ jobs:
           gcloud run deploy bitch-image --image asia-southeast1-docker.pkg.dev/rpi-hub-438905/test-repository/bitch-image:180a24ebcbf6aecaa92c6f42b36afbe1527eeab4 \
           --update-labels managed-by=github-actions,commit-sha=180a24ebcbf6aecaa92c6f42b36afbe1527eeab4 \
           --region asia-southeast1 \
-          --service-account estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com
+          --service-account estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com \
+          --allow-unauthenticated
 
       - name: "Show output"
         run: |
