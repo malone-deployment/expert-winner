@@ -35,13 +35,21 @@ on:
       - main
 
 env:
-  PROJECT_ID: "rpi-hub-438905" # TODO: update to your Google Cloud project ID
-  REGION: "asia-southeast1" # TODO: update to your regions
-  SERVICE_EMAIL: "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com" # TODO: update to your service email
-  WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github-one/providers/my-repo" # TODO: update to your workload identity provider
-  REPOSITORY_NAME: "test-repository"
-  IMAGE_NAME: "bitch-image"
-  REPO: "malone-deployment/expert-winner"
+  PROJECT_ID: ${{ secrets.PROJECT_ID }} # TODO: update to your Google Cloud project ID
+  REGION: ${{ secrets.REGION }} # TODO: update to your regions
+  SERVICE_EMAIL: ${{ secrets.SERVICE_EMAIL }} # TODO: update to your service email
+  WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }} # TODO: update to your workload identity provider
+  REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
+  IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+  REPO: ${{ secrets.REPO }}
+
+#   PROJECT_ID: "rpi-hub-438905" # TODO: update to your Google Cloud project ID
+#   REGION: "asia-southeast1" # TODO: update to your regions
+#   SERVICE_EMAIL: "estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com" # TODO: update to your service email
+#   WORKLOAD_IDENTITY_PROVIDER: "projects/422041495987/locations/global/workloadIdentityPools/github-one/providers/my-repo" # TODO: update to your workload identity provider
+#   REPOSITORY_NAME: "test-repository"
+#   IMAGE_NAME: "bitch-image"
+#   REPO: "malone-deployment/expert-winner"
 
 jobs:
   deploy:
