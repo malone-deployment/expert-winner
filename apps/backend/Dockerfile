@@ -10,7 +10,7 @@ COPY . ./
 RUN npm install
 
 # Build the NestJS application
-RUN npm run build --workspace=backend
+RUN npx nx run backend:build
 
 # Production image
 FROM node:18-alpine AS production
