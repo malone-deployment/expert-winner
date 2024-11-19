@@ -1,30 +1,35 @@
+# Base image
+FROM node:18-alpine AS base
 
-FROM node:18-alpine
+# Set working directory
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+COPY nx.json ./
+COPY tsconfig*.json ./
+COPY workspace.json ./
+COPY libs/ ./libs/
+COPY apps/ ./apps/
+RUN npm install
+
+# Build the NestJS application
+RUN npm run build --workspace=<your-app-name>
+
+# Production image
+FROM node:18-alpine AS production
 
 WORKDIR /app
 
-COPY ../../package.json .
-# COPY ../../apps/backend/package.json .
+# Copy package.json and install production dependencies
+COPY package*.json ./
+RUN npm install --only=production
 
+# Copy built application
+COPY --from=base /app/dist/apps/<your-app-name> ./dist
 
-RUN npm install
-
-RUN npm install -g nx@19.6.5
-
-COPY . .
-
-RUN npx nx build backend
-
-
-
+# Expose application port
 EXPOSE 3000
 
-CMD ["node", "main.js"]
-
-
-
-
-
-
-
-
+# Start the application
+CMD ["node", "dist/main.js"]
