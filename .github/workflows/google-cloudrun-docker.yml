@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  PROJECT_ID: ${{ secrets.PROJECT_ID }} # Google Cloud project ID
+  PROJECT_ID: ${{ secrets.PROJECT_ID }} # Google Cloud project IDs
   REGION: ${{ secrets.REGION }} # Google Cloud region
   SERVICE_EMAIL: ${{ secrets.SERVICE_EMAIL }} # Service account email
   WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }} # Workload Identity Provider
