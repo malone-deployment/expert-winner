@@ -1,8 +1,0 @@
-services:
-  nx:
-    build:
-      dockerfile: Dockerfile
-      context: .
-      target: nx
-    volumes:
-      - ../:/workspace
