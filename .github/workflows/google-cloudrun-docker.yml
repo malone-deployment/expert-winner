@@ -33,6 +33,9 @@ jobs:
       id-token: 'write'
 
     steps:
+      - name: 'Get directory'
+        run: ls
+
       - name: 'Checkout'
         uses: 'actions/checkout@v4'
 

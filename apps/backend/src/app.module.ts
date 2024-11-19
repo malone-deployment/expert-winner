@@ -8,9 +8,9 @@ import { WifiModule } from './wifi/wifi.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
-      //     extra: {
-      //         socketPath: /cloudsql/project:region:instance
-      // },
+      extra: {
+        socketPath: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
+      },
       port: 5432,
       username: process.env.DB_USER || 'wifi',
       password: process.env.DB_PASS || '9DPx*:O=S3rDL.:l',
