@@ -61,6 +61,8 @@ jobs:
           docker build apps/backend/ -t "${DOCKER_TAG}"
           gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
           docker push "${DOCKER_TAG}"
+        with:
+          context: .
 
       - name: 'Deploy to Cloud Run'
         run: |
