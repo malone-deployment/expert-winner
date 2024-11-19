@@ -58,7 +58,8 @@ jobs:
       - name: 'Build and Push Image to Artifact Registry'
         uses: 'docker/build-push-action@v3'
         with:
-          context: .
+          # context: .
+          context: apps/backend
         # run: |-
         #   DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}"
         #   docker build apps/backend/ -t "${DOCKER_TAG}"
