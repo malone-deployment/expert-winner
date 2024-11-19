@@ -51,6 +51,7 @@ jobs:
             --build-arg POSTGRES_USER="${{ env.POSTGRES_USER }}" \
             --build-arg POSTGRES_PASSWORD="${{ env.POSTGRES_PASSWORD }}" \
             --build-arg POSTGRES_DB="${{ env.POSTGRES_DB }}"
+          gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
           docker push "${DOCKER_TAG}"
 
       - name: "Deploy to Cloud Run"
