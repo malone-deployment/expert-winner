@@ -69,7 +69,7 @@ jobs:
           --allow-unauthenticated \
           --add-cloudsql-instances postgresql \
           --set-env-vars INSTANCE_UNIX_SOCKET="/cloudsql/postgresql" \
-          --set-env-vars INSTANCE_CONNECTION_NAME="postgresql" \
+          --set-env-vars INSTANCE_CONNECTION_NAME="rpi-hub-438905:asia-southeast1:postgresql" \
           --set-env-vars DB_NAME="wifi" \
           --set-env-vars DB_USER="wifi" \
           --set-env-vars DB_PASS="9DPx*:O=S3rDL.:l"
