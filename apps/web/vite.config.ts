@@ -7,15 +7,13 @@ import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
 export default defineConfig({
   root: __dirname,
   cacheDir: '../../node_modules/.vite/apps/web',
-  base: '/',
   server: {
     port: 8080,
-    host: 'true',
-    origin: 'http://0.0.0.0:8080',
+    host: 'localhost',
   },
   preview: {
     port: 8080,
-    strictPort: true,
+    host: 'localhost',
   },
   plugins: [react(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
   // Uncomment this if you are using workers.
