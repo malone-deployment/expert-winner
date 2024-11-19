@@ -5,10 +5,11 @@ FROM node:20.10.0 AS nx
 RUN npm install -g nx@19.6.5
 
 # Set the working directory to /workspace inside the container
-WORKDIR /workspace
+WORKDIR /usr/app
+WORKDIR /usr/app
 
 # Copy the entire workspace into the container (this includes package.json and the Nx workspace)
-COPY . .
+COPY ./ ./
 
 # Install dependencies from the package.json file in the root
 RUN npm install
@@ -21,13 +22,13 @@ RUN npx nx build backend
 FROM node:20.10.0 AS backend
 
 # Set the working directory for the final container image
-WORKDIR /app
+WORKDIR /usr/app
 
 # Copy the built backend files from the previous build stage
-COPY --from=nx /workspace/dist/apps/backend ./ 
+COPY --from=nx /workspace/dist/apps/backend ./
 
 # Copy the backend specific package.json (which is inside the dist folder) 
-COPY --from=nx /workspace/apps/backend/package.json ./ 
+COPY --from=nx /workspace/apps/backend/package.json ./
 
 # Install production dependencies (needed for running the backend)
 # This ensures that the production dependencies are installed after copying the package.json
