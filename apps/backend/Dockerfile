@@ -3,7 +3,7 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY ../../dist/apps/backend/package.json .
+COPY ../../package.json .
 # COPY ../../apps/backend/package.json .
 
 
