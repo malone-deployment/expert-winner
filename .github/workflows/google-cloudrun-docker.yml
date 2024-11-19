@@ -51,11 +51,14 @@ jobs:
           password: '${{ steps.auth.outputs.auth_token }}'
           registry: '${{ env.REGION }}-docker.pkg.dev'
 
+      - name: Build Backend
+        run: npx nx build backend --configuration=production
+
       # Build and deploy the BACKEND service to Cloud Run
       - name: 'Build and Push Image to Artifact Registry'
         run: |-
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}"
-          docker build -f apps/backend/Dockerfile apps/backend/ -t "${DOCKER_TAG}"
+          docker build apps/backend/Dockerfile -t "${DOCKER_TAG}"
           gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
           docker push "${DOCKER_TAG}"
 
