@@ -51,11 +51,27 @@ jobs:
           password: '${{ steps.auth.outputs.auth_token }}'
           registry: '${{ env.REGION }}-docker.pkg.dev'
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.10.0' # Use the same Node version as in your Dockerfile
+
+      # Step 3: Install Nx and workspace dependencies
+      - name: Install dependencies
+        run: |
+          npm install -g nx@19.6.5
+          npm install  # Install dependencies for the Nx workspace
+
+      # Step 4: Build the backend application with Nx
+      - name: Build the backend
+        run: |
+          npx nx build backend  # Build the backend application
+
       # Build and deploy the BACKEND service to Cloud Run
       - name: 'Build and Push Image to Artifact Registry'
         run: |-
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}"
-          docker build apps/backend/ -t "${DOCKER_TAG}"
+          docker build -f apps/backend/Dockerfile apps/backend/ -t "${DOCKER_TAG}"
           gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
           docker push "${DOCKER_TAG}"
 

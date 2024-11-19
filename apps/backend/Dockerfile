@@ -1,24 +1,39 @@
-FROM docker.io/node:lts-alpine
+# Use the official Node.js image as a base image
+FROM node:20.10.0 AS nx
 
+# Install Nx globally
+RUN npm install -g nx@19.6.5
+
+# Set the working directory to the /workspace directory inside the container
+WORKDIR /workspace
+
+# Copy the entire workspace into the container
+COPY . .
+
+# Install dependencies (assuming the Nx workspace has package.json)
+RUN npm install
+
+# Build the backend application
+RUN npx nx build backend
+
+# Set the final image for the backend (this step can vary depending on how you want to run the app)
+FROM node:20.10.0 AS backend
+
+# Set the working directory for the final container image
+WORKDIR /app
+
+# Copy the built backend files from the previous stage (nx build backend)
+COPY --from=nx /workspace/dist/apps/backend ./ 
+
+# Install production dependencies
+RUN npm install --production
+
+# Expose port 3000 to be accessible from outside the container
+EXPOSE 3000
+
+# Set environment variables
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-# Create a non-root user and group for the backend app
-RUN addgroup --system backend && \
-    adduser --system -G backend backend
-
-# Set working directory inside the container
-WORKDIR /app
-
-# Copy the build output to the container
-COPY dist/apps/backend ./
-
-# Ensure the correct file permissions for the backend user
-RUN chown -R backend:backend . 
-
-# Install production dependencies (optional, if needed)
-RUN npm --prefix backend --omit=dev -f install
-
-# Use the backend directory entry point
-CMD [ "node", "backend" ]
-
+# Run the backend application
+CMD ["node", "backend"]
