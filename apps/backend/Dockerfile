@@ -26,11 +26,11 @@ WORKDIR /app
 # Copy the built backend files from the previous build stage
 COPY --from=nx /workspace/dist/apps/backend ./ 
 
-# Install production dependencies (needed for running the backend)
-# This should come after copying the built files to ensure no unnecessary rebuild
-COPY --from=nx /workspace/package.json ./ 
-COPY --from=nx /workspace/package-lock.json ./
+# Copy the backend specific package.json (which is inside the dist folder) 
+COPY --from=nx /workspace/apps/backend/package.json ./ 
 
+# Install production dependencies (needed for running the backend)
+# This ensures that the production dependencies are installed after copying the package.json
 RUN npm install --production
 
 # Expose port 3000 for the backend service
