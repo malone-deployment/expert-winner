@@ -5,16 +5,12 @@ FROM node:18-alpine AS base
 WORKDIR /app
 
 # Install dependencies
-COPY package*.json ./
-COPY nx.json ./
-COPY tsconfig*.json ./
-COPY workspace.json ./
-COPY libs/ ./libs/
-COPY apps/ ./apps/
+COPY . ./
+
 RUN npm install
 
 # Build the NestJS application
-RUN npm run build --workspace=<your-app-name>
+RUN npm run build --workspace=backend
 
 # Production image
 FROM node:18-alpine AS production
@@ -26,7 +22,7 @@ COPY package*.json ./
 RUN npm install --only=production
 
 # Copy built application
-COPY --from=base /app/dist/apps/<your-app-name> ./dist
+COPY --from=base /app/dist/apps/backend ./dist
 
 # Expose application port
 EXPOSE 3000
