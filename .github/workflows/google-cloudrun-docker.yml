@@ -75,9 +75,9 @@ jobs:
         #     --set-env-vars DB_PASS="9DPx*:O=S3rDL.:l"
 
         # - name: 'Show output'
-        run: |
-          echo "Cloud Run service deployed to:"
-          echo "${{ steps.deploy.outputs.url }}"
+        # run: |
+        #   echo "Cloud Run service deployed to:"
+        #   echo "${{ steps.deploy.outputs.url }}"
 
       # Build and deploy the WEB service to Cloud Run
       - name: 'Build and Push Image to Artifact Registry'
