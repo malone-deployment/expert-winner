@@ -6,10 +6,9 @@ RUN npm install -g nx@19.6.5
 
 # Set the working directory to /workspace inside the container
 WORKDIR /usr/app
-WORKDIR /usr/app
 
 # Copy the entire workspace into the container (this includes package.json and the Nx workspace)
-COPY ./ ./
+COPY ./ /usr/app
 
 # Install dependencies from the package.json file in the root
 RUN npm install
