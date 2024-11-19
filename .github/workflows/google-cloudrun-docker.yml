@@ -11,6 +11,7 @@ env:
   SERVICE_EMAIL: ${{ secrets.SERVICE_EMAIL }} # Service account email
   WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }} # Workload Identity Provider
   GAR_REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }} # Artifact Registry repository
+
   POSTGRES_SERVICE: 'postgres-service' # Cloud Run service name
   BACKEND_SERVICE: 'backend-service' # Cloud Run service name
   WEB_SERVICE: 'web-service' # Cloud Run service name
@@ -18,6 +19,7 @@ env:
   POSTGRES_IMAGE: 'postgres-image' # Docker image name
   BACKEND_IMAGE: 'backend-image'
   WEB_IMAGE: 'web-image'
+
   POSTGRES_USER: 'wifi' # Database username
   POSTGRES_PASSWORD: 'wifi' # Database password
   POSTGRES_DB: 'wifi' # Database name
@@ -74,7 +76,7 @@ jobs:
 
       - name: 'Show Cloud Run URL'
             run: |-
-              echo "Service URL: https://$(gcloud run services describe ${{ env.IMAGE_NAME }} --region=${{ env.REGION }} --format='value(status.url)')"
+              echo "Service URL: https://$(gcloud run services describe ${{ env.POSTGRES_SERVICE }} --region=${{ env.REGION }} --format='value(status.url)')"
       timeout: 1200s
 
 
