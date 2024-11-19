@@ -65,4 +65,5 @@ jobs:
             --cpu "1"
 
       - name: "Show Cloud Run URL"
-        run: echo "Service URL: https://$(gcloud run services describe ${{ env.IMAGE_NAME }} --region=${{ env.REGION }} --format='value(status.url)')"
+        run: |-
+          echo "Service URL: https://$(gcloud run services describe ${{ env.IMAGE_NAME }} --region=${{ env.REGION }} --format='value(status.url)')"
