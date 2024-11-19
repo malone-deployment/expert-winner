@@ -75,9 +75,9 @@ jobs:
                 --cpu "1"
 
       - name: 'Show Cloud Run URL'
-            run: |-
+         run: |-
               echo "Service URL: https://$(gcloud run services describe ${{ env.POSTGRES_SERVICE }} --region=${{ env.REGION }} --format='value(status.url)')"
-      timeout: 1200s
+         timeout: 1200s
 
 
       # Build and deploy the BACKEND service to Cloud Run
