@@ -37,7 +37,7 @@ jobs:
         uses: 'actions/checkout@v4'
 
       - name: List dist/apps directory
-        run: ls -al dist/apps  
+        run: ls -al dist/apps/backend  
 
       - name: 'Get directory'
         run: ls
