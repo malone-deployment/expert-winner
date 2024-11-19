@@ -37,7 +37,7 @@ jobs:
         uses: 'actions/checkout@v4'
 
       - name: List dist/apps directory
-        run: ls -al dist/apps/backend  
+        run: ls -al dist/apps/backend
 
       - name: 'Get directory'
         run: ls
@@ -60,14 +60,11 @@ jobs:
       # Build and deploy the BACKEND service to Cloud Run
       - name: 'Build and Push Image to Artifact Registry'
         uses: 'docker/build-push-action@v3'
-        with:
-          # context: .
-          context: apps/backend
-        # run: |-
-        #   DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}"
-        #   docker build apps/backend/ -t "${DOCKER_TAG}"
-        #   gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
-        #   docker push "${DOCKER_TAG}"
+        run: |-
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}"
+          docker build apps/backend/ -t "${DOCKER_TAG}"
+          gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
+          docker push "${DOCKER_TAG}"
 
       - name: 'Deploy to Cloud Run'
         run: |
