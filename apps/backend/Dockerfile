@@ -1,39 +1,42 @@
-# Use the official Node.js image as a base image
+# Use the official Node.js image as a base image for building the application
 FROM node:20.10.0 AS nx
 
-# Install Nx globally
+# Install Nx globally to handle Nx workspace commands
 RUN npm install -g nx@19.6.5
 
-# Set the working directory to the /workspace directory inside the container
+# Set the working directory to /workspace inside the container
 WORKDIR /workspace
 
-# Copy the entire workspace into the container
+# Copy the entire workspace into the container (this includes the package.json)
 COPY . .
 
-# Install dependencies (assuming the Nx workspace has package.json)
+# Install dependencies from the package.json file
 RUN npm install
 
-# Build the backend application
+# Build the backend application using Nx
 RUN npx nx build backend
 
-# Set the final image for the backend (this step can vary depending on how you want to run the app)
+# ----------------------------------------------
+# Final image for running the backend application
 FROM node:20.10.0 AS backend
 
 # Set the working directory for the final container image
 WORKDIR /app
 
-# Copy the built backend files from the previous stage (nx build backend)
+# Copy the built backend files from the previous build stage
 COPY --from=nx /workspace/dist/apps/backend ./ 
 
-# Install production dependencies
+# Install production dependencies (needed for running the backend)
+WORKDIR /workspace
+COPY package.json .
 RUN npm install --production
 
-# Expose port 3000 to be accessible from outside the container
+# Expose port 3000 for the backend service
 EXPOSE 3000
 
-# Set environment variables
+# Set environment variables for the application
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-# Run the backend application
+# Command to run the backend application
 CMD ["node", "backend"]
