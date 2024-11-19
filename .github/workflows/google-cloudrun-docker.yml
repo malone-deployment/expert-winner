@@ -51,44 +51,42 @@ jobs:
           password: '${{ steps.auth.outputs.auth_token }}'
           registry: '${{ env.REGION }}-docker.pkg.dev'
 
-
       # Build and deploy the POSTGRES service to Cloud Run
       - name: 'Build and Push Image to Artifact Registry'
         run: |-
-            DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.POSTGRES_IMAGE }}:${{ github.sha }}"
-            docker build postgres/ -t "${DOCKER_TAG}" \
-              --build-arg POSTGRES_USER="${{ env.POSTGRES_USER }}" \
-              --build-arg POSTGRES_PASSWORD="${{ env.POSTGRES_PASSWORD }}" \
-              --build-arg POSTGRES_DB="${{ env.POSTGRES_DB }}"
-            gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
-            docker push "${DOCKER_TAG}"
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.POSTGRES_IMAGE }}:${{ github.sha }}"
+          docker build postgres/ -t "${DOCKER_TAG}" \
+            --build-arg POSTGRES_USER="${{ env.POSTGRES_USER }}" \
+            --build-arg POSTGRES_PASSWORD="${{ env.POSTGRES_PASSWORD }}" \
+            --build-arg POSTGRES_DB="${{ env.POSTGRES_DB }}"
+          gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
+          docker push "${DOCKER_TAG}"
 
       - name: 'Deploy to Cloud Run'
         run: |-
-              gcloud run deploy "${{ env.POSTGRES_SERVICE }}" \
-                --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.POSTGRES_IMAGE }}:${{ github.sha }}" \
-                --region "${{ env.REGION }}" \
-                --service-account "${{ env.SERVICE_EMAIL }}" \
-                --allow-unauthenticated \
-                --port 5432 \
-                --memory "512Mi" \
-                --cpu "1"
+          gcloud run deploy "${{ env.POSTGRES_SERVICE }}" \
+            --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.POSTGRES_IMAGE }}:${{ github.sha }}" \
+            --region "${{ env.REGION }}" \
+            --service-account "${{ env.SERVICE_EMAIL }}" \
+            --allow-unauthenticated \
+            --port 5432 \
+            --memory "512Mi" \
+            --cpu "1"
 
       - name: 'Show Cloud Run URL'
-         run: |-
-              echo "Service URL: https://$(gcloud run services describe ${{ env.POSTGRES_SERVICE }} --region=${{ env.REGION }} --format='value(status.url)')"
-         timeout: 1200s
-
+        run: |-
+          echo "Service URL: https://$(gcloud run services describe ${{ env.POSTGRES_SERVICE }} --region=${{ env.REGION }} --format='value(status.url)')"
+        timeout: 1200s
 
       # Build and deploy the BACKEND service to Cloud Run
-      - name: "Build and Push Image to Artifact Registry"
+      - name: 'Build and Push Image to Artifact Registry'
         run: |-
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}"  
           docker build apps/backend/Dockerfile -t "${DOCKER_TAG}"
           gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
           docker push "${DOCKER_TAG}"
 
-      - name: "Deploy to Cloud Run"
+      - name: 'Deploy to Cloud Run'
         run: |
           gcloud run deploy "${{ env.BACKEND_SERVICE }}" \
           --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}" \
@@ -97,20 +95,20 @@ jobs:
           --service-account "${{ env.SERVICE_EMAIL }}" \
           --allow-unauthenticated
 
-      - name: "Show output"
+      - name: 'Show output'
         run: |
           echo "Cloud Run service deployed to:"
           echo "${{ steps.deploy.outputs.url }}"
 
       # Build and deploy the WEB service to Cloud Run
-      - name: "Build and Push Image to Artifact Registry"
+      - name: 'Build and Push Image to Artifact Registry'
         run: |-
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/rpi-hub-438905/${{ env.GAR_REPOSITORY_NAME }}/${{ env.WEB_IMAGE }}:${{ github.sha }}"  
           docker build apps/web/Dockerfile -t "${DOCKER_TAG}"
           gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
           docker push "${DOCKER_TAG}"
 
-      - name: "Deploy to Cloud Run"
+      - name: 'Deploy to Cloud Run'
         run: |
           gcloud run deploy "${{ env.WEB_SERVICE }}" \
           --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.WEB_IMAGE }}:${{ github.sha }}" \
@@ -119,10 +117,7 @@ jobs:
           --service-account "${{ env.SERVICE_EMAIL }}" \
           --allow-unauthenticated
 
-      - name: "Show output"
+      - name: 'Show output'
         run: |
           echo "Cloud Run service deployed to:"
           echo "${{ steps.deploy.outputs.url }}"
-
-
-
