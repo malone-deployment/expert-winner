@@ -56,6 +56,7 @@ jobs:
 
       # Build and deploy the BACKEND service to Cloud Run
       - name: 'Build and Push Image to Artifact Registry'
+        uses: 'docker/build-push-action@v3'
         with:
           context: .
         run: |-
