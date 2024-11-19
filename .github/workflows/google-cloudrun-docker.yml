@@ -51,9 +51,6 @@ jobs:
           password: '${{ steps.auth.outputs.auth_token }}'
           registry: '${{ env.REGION }}-docker.pkg.dev'
 
-      - name: Build Backend
-        run: npx nx build backend --configuration=production
-
       # Build and deploy the BACKEND service to Cloud Run
       - name: 'Build and Push Image to Artifact Registry'
         run: |-
