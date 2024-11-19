@@ -9,12 +9,12 @@ FROM docker.io/node:lts-alpine
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 RUN addgroup --system backend && \
     adduser --system -G backend backend
 
-COPY dist/apps/backend .
+COPY dist/apps/backend/* backend/
 RUN chown -R backend:backend .
 
 # You can remove this install step if you build with `--bundle` option.
