@@ -56,11 +56,10 @@ jobs:
         with:
           node-version: '20.10.0' # Use the same Node version as in your Dockerfile
 
-      # Step 3: Install Nx and workspace dependencies
+      # Step 3: Install workspace dependencies using npm ci
       - name: Install dependencies
         run: |
-          npm install -g nx@19.6.5
-          npm install  # Install dependencies for the Nx workspace
+          npm ci  # Install dependencies using clean install, which is faster and more reliable for CI environments
 
       # Step 4: Build the backend application with Nx
       - name: Build the backend
@@ -82,7 +81,7 @@ jobs:
           --update-labels managed-by=github-actions,commit-sha="${{ github.sha }}" \
           --region "${{ env.REGION }}" \
           --service-account "${{ env.SERVICE_EMAIL }}" \
-          --allow-unauthenticated
+          --allow-unauthenticated \
           --add-cloudsql-instances postgresql \
           --set-env-vars INSTANCE_UNIX_SOCKET="/cloudsql/postgresql" \
           --set-env-vars INSTANCE_CONNECTION_NAME="postgresql" \

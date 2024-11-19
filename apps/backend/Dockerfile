@@ -7,10 +7,10 @@ RUN npm install -g nx@19.6.5
 # Set the working directory to /workspace inside the container
 WORKDIR /workspace
 
-# Copy the entire workspace into the container (this includes package.json)
+# Copy the entire workspace into the container (this includes package.json and the Nx workspace)
 COPY . .
 
-# Install dependencies from the package.json file
+# Install dependencies from the package.json file in the root
 RUN npm install
 
 # Build the backend application using Nx
@@ -26,10 +26,11 @@ WORKDIR /app
 # Copy the built backend files from the previous build stage
 COPY --from=nx /workspace/dist/apps/backend ./ 
 
-# Copy the backend specific package.json from apps/backend
-COPY --from=nx /workspace/apps/backend/package.json ./ 
-
 # Install production dependencies (needed for running the backend)
+# This should come after copying the built files to ensure no unnecessary rebuild
+COPY --from=nx /workspace/package.json ./ 
+COPY --from=nx /workspace/package-lock.json ./
+
 RUN npm install --production
 
 # Expose port 3000 for the backend service
@@ -40,4 +41,4 @@ ENV HOST=0.0.0.0
 ENV PORT=3000
 
 # Command to run the backend application
-CMD ["node", "backend"]
+CMD ["node", "main.js"]
