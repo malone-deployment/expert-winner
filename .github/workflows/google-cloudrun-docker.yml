@@ -33,11 +33,11 @@ jobs:
       id-token: 'write'
 
     steps:
-      - name: 'Get directory'
-        run: ls
-
       - name: 'Checkout'
         uses: 'actions/checkout@v4'
+
+      - name: 'Get directory'
+        run: ls
 
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
