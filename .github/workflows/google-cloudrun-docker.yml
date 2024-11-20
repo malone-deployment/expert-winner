@@ -24,12 +24,13 @@ env:
   POSTGRES_PASSWORD: 'wifi' # Database password
   POSTGRES_DB: 'wifi' # Database name
 
-  GOOGLE_APPLICATION_CREDENTIALS: '~/.config/gcloud/SERVICE_ACCOUNT_KEY_FILE_NAME.json'
+  #   GOOGLE_APPLICATION_CREDENTIALS: '~/.config/gcloud/SERVICE_ACCOUNT_KEY_FILE_NAME.json'
   DB_HOST: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql'
   DB_PORT: '5432' # Explicitly define the DB port
   DB_NAME: 'postgres'
   DB_USER: 'estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com'
   DB_PASS: '9DPx*:O=S3rDL.:l'
+  INSTANCE: 'postgresql'
   INSTANCE_NAME: 'rpi-hub-438905:asia-southeast1:postgresql'
 
 jobs:
@@ -75,7 +76,7 @@ jobs:
             --region "${{ env.REGION }}" \
             --service-account "${{ env.SERVICE_EMAIL }}" \
             --allow-unauthenticated \
-            --add-cloudsql-instances="${{ env.INSTANCE_NAME }}" \
+            --add-cloudsql-instances="${{ env.INSTANCE }}" \
             --set-env-vars=DB_HOST="${{ env.DB_HOST }}" \
             --set-env-vars=DB_PORT="${{ env.DB_PORT }}" \
             --set-env-vars=DB_NAME="${{ env.DB_NAME }}" \
