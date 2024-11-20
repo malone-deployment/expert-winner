@@ -27,11 +27,8 @@ exports.AppModule = AppModule = tslib_1.__decorate([
         imports: [
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
-                host: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql', // This will pull the socket path from environment variable
+                host: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
                 port: 5432,
-                extra: {
-                    socketPath: process.env.INSTANCE_UNIX_SOCKET, // Using the environment variable for socket path
-                },
                 username: 'postgres', // Use environment variable for DB user
                 database: 'postgres', // Use environment variable for DB name
                 password: '9DPx*:O=S3rDL.:l', // Use environment variable for DB password
@@ -369,12 +366,14 @@ var exports = __webpack_exports__;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __webpack_require__(1);
 const app_module_1 = __webpack_require__(2);
+const HOST = '0.0.0.0';
+const PORT = Number(process.env.PORT) || 8080;
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors();
-    const port = process.env.PORT || 8080;
-    app.listen(port, () => {
-        console.log('Hello world listening on port', port);
+    await app.listen(PORT, HOST).then(() => {
+        // tslint:disable-next-line:no-console
+        console.log(`** Nest Live Development Server is listening on ${HOST}:${PORT}, open your browser on http://localhost:${PORT}/ **`);
     });
 }
 bootstrap();
