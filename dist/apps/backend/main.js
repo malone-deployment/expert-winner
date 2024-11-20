@@ -371,7 +371,7 @@ const app_module_1 = __webpack_require__(2);
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors();
-    await app.listen(3000);
+    await app.listen(8080);
 }
 bootstrap();
 
