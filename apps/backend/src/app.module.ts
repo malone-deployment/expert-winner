@@ -8,7 +8,7 @@ import { WifiModule } from './wifi/wifi.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
-
+      port: 5432,
       extra: {
         socketPath: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
       },

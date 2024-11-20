@@ -28,6 +28,7 @@ exports.AppModule = AppModule = tslib_1.__decorate([
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
                 host: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
+                port: 5432,
                 extra: {
                     socketPath: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
                 },
