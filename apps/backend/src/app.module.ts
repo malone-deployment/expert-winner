@@ -14,8 +14,8 @@ import { WifiModule } from './wifi/wifi.module';
       },
       username:
         'estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com',
-      password: '9DPx*:O=S3rDL.:l', // Use environment variable if available
       database: 'postgres',
+      password: '9DPx*:O=S3rDL.:l', // Use environment variable if available
       entities: [WifiEntity],
       synchronize: true,
     }),
