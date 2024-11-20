@@ -24,6 +24,21 @@ env:
   POSTGRES_PASSWORD: 'wifi' # Database password
   POSTGRES_DB: 'wifi' # Database name
 
+  GOOGLE_APPLICATION_CREDENTIALS: '~/.config/gcloud/SERVICE_ACCOUNT_KEY_FILE_NAME.json'
+  INSTANCE_HOST: '34.87.160.189'
+  DB_PORT: '5432'
+  DB_NAME: 'postgresql'
+  DB_USER: 'postgres'
+  DB_PASS: '9DPx*:O=S3rDL.:l'
+  INSTANCE_NAME: 'rpi-hub-438905:asia-southeast1:postgresql'
+
+  gcloud run services update "${{ env.BACKEND_SERVICE }}" \
+            --add-cloudsql-instances=rpi-hub-438905:asia-southeast1:postgresql \
+            --update-env-vars=INSTANCE_CONNECTION_NAME=postgresql \
+            --update-secrets=DB_USER=postgres:latest \
+            --update-secrets=DB_PASS=9DPx*:O=S3rDL.:l:latest \
+            --update-secrets=DB_NAME=postgres:latest
+
 jobs:
   deploy:
     runs-on: 'ubuntu-latest'
@@ -72,15 +87,15 @@ jobs:
         run: |
           echo "Cloud Run service deployed to:"
           echo "${{ steps.deploy.outputs.url }}"
-
+      # gcloud sql connect postgresql --user=postgres
       - name: 'Deploy to Cloud SQL'
         run: |
-          gcloud run services update "${{ env.BACKEND_SERVICE }}" \
-            --add-cloudsql-instances=rpi-hub-438905:asia-southeast1:postgresql
-            --update-env-vars=INSTANCE_CONNECTION_NAME=postgresql \
-            --update-secrets=DB_USER=wifi:latest \
-            --update-secrets=DB_PASS=9DPx*:O=S3rDL.:l:latest \
-            --update-secrets=DB_NAME=wifi:latest
+          gcloud run services update backend-service \
+          --add-cloudsql-instances=postgresql
+          --update-env-vars=INSTANCE_CONNECTION_NAME=rpi-hub-438905:asia-southeast1:postgresql \
+          --update-secrets=DB_USER=estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com:latest \
+          --update-secrets=DB_PASS=9DPx*:O=S3rDL.:l:latest \
+          --update-secrets=DB_NAME=postgres:latest
 
       # Build and deploy the WEB service to Cloud Run
       # - name: 'Build and Push Image to Artifact Registry'

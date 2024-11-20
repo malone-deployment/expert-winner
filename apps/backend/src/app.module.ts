@@ -7,13 +7,18 @@ import { WifiModule } from './wifi/wifi.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
-      extra: {
-        socketPath: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
-      },
-      username: 'wifi',
-      password: 'wifi',
-      database: 'wifi',
+      host: '34.87.160.189',
+      //   host: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
+      port: 5432,
+      //   host: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
+      //   host: '34.87.160.189',
+      //   extra: {
+      //     socketPath: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
+      //   },
+      username:
+        'estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com',
+      password: '9DPx*:O=S3rDL.:l',
+      database: 'postgresql',
       entities: [WifiEntity],
       synchronize: true,
     }),
