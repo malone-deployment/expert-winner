@@ -25,7 +25,7 @@ RUN npm install --only=production
 COPY --from=base /app/dist/apps/backend ./dist
 
 # Expose application port
-EXPOSE 3000
+EXPOSE 8080
 
 # Start the application
 CMD ["node", "dist/main.js"]
