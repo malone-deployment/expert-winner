@@ -67,25 +67,24 @@ jobs:
           gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
           docker push "${DOCKER_TAG}"
 
-     - name: 'Deploy to Cloud Run'
-       run: |-
-        gcloud run deploy "${{ env.BACKEND_SERVICE }}" \
-        --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}" \
-        --update-labels managed-by=github-actions,commit-sha="${{ github.sha }}" \
-        --region "${{ env.REGION }}" \
-        --service-account "${{ env.SERVICE_EMAIL }}" \
-        --allow-unauthenticated \
-        --add-cloudsql-instances="${{ env.INSTANCE_NAME }}" \
-        --set-env-vars=DB_HOST="${{ env.DB_HOST }}" \
-        --set-env-vars=DB_PORT="${{ env.DB_PORT }}" \
-        --set-env-vars=DB_NAME="${{ env.DB_NAME }}" \
-        --set-env-vars=INSTANCE_NAME="${{ env.INSTANCE_NAME }}" \
-        --update-secrets=DB_USER="${{ env.DB_USER }}:latest" \
-        --update-secrets=DB_PASS="${{ env.DB_PASS }}:latest" \
-        --update-secrets=DB_NAME="${{ env.DB_NAME }}:latest" \
-        --timeout=300s \
-        --health-check-timeout=60s
-
+      - name: 'Deploy to Cloud Run'
+        run: |-
+          gcloud run deploy "${{ env.BACKEND_SERVICE }}" \
+            --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}" \
+            --update-labels managed-by=github-actions,commit-sha="${{ github.sha }}" \
+            --region "${{ env.REGION }}" \
+            --service-account "${{ env.SERVICE_EMAIL }}" \
+            --allow-unauthenticated \
+            --add-cloudsql-instances="${{ env.INSTANCE_NAME }}" \
+            --set-env-vars=DB_HOST="${{ env.DB_HOST }}" \
+            --set-env-vars=DB_PORT="${{ env.DB_PORT }}" \
+            --set-env-vars=DB_NAME="${{ env.DB_NAME }}" \
+            --set-env-vars=INSTANCE_NAME="${{ env.INSTANCE_NAME }}" \
+            --update-secrets=DB_USER="${{ env.DB_USER }}:latest" \
+            --update-secrets=DB_PASS="${{ env.DB_PASS }}:latest" \
+            --update-secrets=DB_NAME="${{ env.DB_NAME }}:latest" \
+            --timeout=300s \
+            --health-check-timeout=60s
 
       # Build and deploy the WEB service to Cloud Run
       # - name: 'Build and Push Image to Artifact Registry'
