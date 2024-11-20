@@ -25,10 +25,10 @@ env:
   POSTGRES_DB: 'wifi' # Database name
 
   GOOGLE_APPLICATION_CREDENTIALS: '~/.config/gcloud/SERVICE_ACCOUNT_KEY_FILE_NAME.json'
-  INSTANCE_HOST: '34.87.160.189'
+  DB_HOST: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql'
   DB_PORT: '5432'
-  DB_NAME: 'postgresql'
-  DB_USER: 'postgres'
+  DB_NAME: 'postgres'
+  DB_USER: 'estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com'
   DB_PASS: '9DPx*:O=S3rDL.:l'
   INSTANCE_NAME: 'rpi-hub-438905:asia-southeast1:postgresql'
 
@@ -75,16 +75,17 @@ jobs:
             --region "${{ env.REGION }}" \
             --service-account "${{ env.SERVICE_EMAIL }}" \
             --allow-unauthenticated \
-            --add-cloudsql-instances=rpi-hub-438905:asia-southeast1:postgresql \
-            --set-env-vars "DB_HOST=/cloudsql/rpi-hub-438905:asia-southeast1:postgresql,DB_USER=estavillofretz-developer-rpi-h@rpi-hub-438905.iam.gserviceaccount.com,DB_PASS=9DPx*:O=S3rDL.:l,DB_NAME=postgres,DB_PORT=5432"
+            --add-cloudsql-instances="${{ env.INSTANCE_NAME }}" \
+            --set-env-vars \
+              DB_HOST="${{ env.DB_HOST }}" \
+              DB_PORT="${{ env.DB_PORT }}" \
+              DB_NAME="${{ env.DB_NAME }}" \
+              DB_USER="${{ env.DB_USER }}" \
+              DB_PASS="${{ env.DB_PASS }}" \
+              INSTANCE_NAME="${{ env.INSTANCE_NAME }}" \
             --timeout=300s \
             --health-check-timeout=60s \
             --no-traffic
-
-      - name: 'Show Output'
-        run: |
-          echo "Cloud Run service deployed:"
-          gcloud run services describe "${{ env.BACKEND_SERVICE }}" --region="${{ env.REGION }}" --format="value(status.url)"
 
       # Build and deploy the WEB service to Cloud Run
       # - name: 'Build and Push Image to Artifact Registry'
