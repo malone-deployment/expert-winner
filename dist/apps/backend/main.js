@@ -372,7 +372,10 @@ const app_module_1 = __webpack_require__(2);
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors();
-    await app.listen(8080);
+    const port = process.env.PORT || 8080;
+    app.listen(port, () => {
+        console.log('Hello world listening on port', port);
+    });
 }
 bootstrap();
 
