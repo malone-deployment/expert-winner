@@ -32,13 +32,6 @@ env:
   DB_PASS: '9DPx*:O=S3rDL.:l'
   INSTANCE_NAME: 'rpi-hub-438905:asia-southeast1:postgresql'
 
-  gcloud run services update "${{ env.BACKEND_SERVICE }}" \
-            --add-cloudsql-instances=rpi-hub-438905:asia-southeast1:postgresql \
-            --update-env-vars=INSTANCE_CONNECTION_NAME=postgresql \
-            --update-secrets=DB_USER=postgres:latest \
-            --update-secrets=DB_PASS=9DPx*:O=S3rDL.:l:latest \
-            --update-secrets=DB_NAME=postgres:latest
-
 jobs:
   deploy:
     runs-on: 'ubuntu-latest'
