@@ -27,14 +27,14 @@ exports.AppModule = AppModule = tslib_1.__decorate([
         imports: [
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
-                host: process.env.INSTANCE_UNIX_SOCKET, // This will pull the socket path from environment variable
+                host: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql', // This will pull the socket path from environment variable
                 port: 5432,
                 extra: {
                     socketPath: process.env.INSTANCE_UNIX_SOCKET, // Using the environment variable for socket path
                 },
-                username: process.env.DB_USER, // Use environment variable for DB user
-                database: process.env.DB_NAME, // Use environment variable for DB name
-                password: process.env.DB_PASS, // Use environment variable for DB password
+                username: 'postgres', // Use environment variable for DB user
+                database: 'postgres', // Use environment variable for DB name
+                password: '9DPx*:O=S3rDL.:l', // Use environment variable for DB password
                 entities: [wifi_entity_1.WifiEntity],
                 synchronize: true,
             }),
