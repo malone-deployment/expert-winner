@@ -258,6 +258,9 @@ let WifiController = class WifiController {
     //   findOne(@Param('id') id: string): string {
     //     return `This action returns a #${id} cat`;
     //   }
+    fck() {
+        return 'fck this shit';
+    }
     startSession(id) {
         console.log({ id });
         return this.wifiService.setStartSession(id);
@@ -268,6 +271,12 @@ let WifiController = class WifiController {
     }
 };
 exports.WifiController = WifiController;
+tslib_1.__decorate([
+    (0, common_1.Get)('fck'),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", []),
+    tslib_1.__metadata("design:returntype", void 0)
+], WifiController.prototype, "fck", null);
 tslib_1.__decorate([
     (0, common_1.Put)(':id'),
     tslib_1.__param(0, (0, common_1.Param)('id')),

@@ -11,6 +11,12 @@ export class WifiController {
   //   findOne(@Param('id') id: string): string {
   //     return `This action returns a #${id} cat`;
   //   }
+
+  @Get('fck')
+  fck() {
+    return 'fck this shit';
+  }
+
   @Put(':id')
   startSession(@Param('id') id: string) {
     console.log({ id });
