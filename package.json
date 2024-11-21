@@ -1,6 +1,7 @@
 {
     "name": "@pisowifi/source",
     "version": "0.0.0",
+    "homepage": "https://web-image-422041495987.asia-southeast1.run.app",
     "license": "MIT",
     "scripts": {
         "dev:backend": "nodemon --watch apps/backend --exec npx nx run backend:serve",
