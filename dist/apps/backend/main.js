@@ -164,7 +164,8 @@ let WifiService = class WifiService {
             wifiEntity.minuteCredits = (0, wifi_type_1.getMinutes)(minuteByToken);
             wifiEntity.date = null;
             try {
-                const baseUrl = 'http://localhost:5173';
+                // const baseUrl = 'http://localhost:5173';
+                const baseUrl = 'https://web-service-422041495987.asia-southeast1.run.app';
                 // const baseUrl = 'http://192.168.100.57:5173';
                 // console.log({ baseUrl });
                 const timeoutRedirectUrl = new URL(`/timeoutPage?minuteByToken=${id}`, baseUrl);
