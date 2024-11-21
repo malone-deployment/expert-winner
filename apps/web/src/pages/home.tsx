@@ -11,7 +11,8 @@ export function Index() {
   async function handleAmountCardClick(token: number) {
     setIsSubmitting(true);
     // TODO: refactor URL use search params constructor
-    const requestUrl = `https://backend-image-422041495987.asia-southeast1.run.app/:8080/wifi?minuteByToken=${String(
+
+    const requestUrl = `https://backend-image-422041495987.asia-southeast1.run.app/wifi?minuteByToken=${String(
       token,
     )}`;
     try {
