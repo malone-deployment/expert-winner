@@ -5,7 +5,7 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
 
 export default defineConfig({
-  base: './',
+  base: 'https://web-image-422041495987.asia-southeast1.run.app/',
   root: __dirname,
   cacheDir: '../../node_modules/.vite/apps/web',
   server: {
