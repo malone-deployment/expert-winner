@@ -376,6 +376,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __webpack_require__(1);
 const app_module_1 = __webpack_require__(2);
 const HOST = '0.0.0.0';
+// 'https://backend-image-422041495987.asia-southeast1.run.app/wifi/ this is the right host base'
 const PORT = Number(process.env.PORT) || 8080;
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
