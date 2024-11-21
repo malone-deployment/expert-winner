@@ -70,6 +70,11 @@ jobs:
           --service-account "${{ env.SERVICE_EMAIL }}" \
           --allow-unauthenticated
 
+      - name: 'Show output'
+        run: |-
+          echo "Cloud Run service deployed to:"
+          echo "${{ steps.deploy.outputs.url }}"
+
       # Build and deploy the BACKEND service to Cloud SQL
     #   - name: 'Deploy to Cloud Run'
     #     run: |-
