@@ -4,12 +4,12 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
 
 export default defineConfig({
-  //   base: '/',
+  base: '/',
   root: __dirname,
   cacheDir: '../../node_modules/.vite/apps/web',
   server: {
     port: 8080,
-    host: 'http://0.0.0.0:8080',
+    host: '0.0.0.0',
   },
   preview: {
     port: 8080,
