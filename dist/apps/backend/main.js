@@ -156,8 +156,8 @@ let WifiService = class WifiService {
     }
     //   async getToken(minuteByToken: Token): Promise<Buffer> {
     async getToken(minuteByToken) {
-        const currentTimestamp = Date.now();
-        const id = globalThis.crypto.randomUUID();
+        // const currentTimestamp = Date.now();
+        const id = 'id' + Math.random().toString(16).slice(2);
         const wifiEntity = new wifi_entity_1.WifiEntity();
         if (wifi_type_1.minutesByToken.hasOwnProperty(minuteByToken)) {
             wifiEntity.tokenId = id;

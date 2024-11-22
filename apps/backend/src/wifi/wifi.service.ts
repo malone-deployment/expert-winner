@@ -29,8 +29,8 @@ export class WifiService {
   async getToken(
     minuteByToken: Token,
   ): Promise<{ qrCode: string; url: string }> {
-    const currentTimestamp = Date.now();
-    const id = globalThis.crypto.randomUUID();
+    // const currentTimestamp = Date.now();
+    const id = 'id' + Math.random().toString(16).slice(2);
     const wifiEntity = new WifiEntity();
 
     if (minutesByToken.hasOwnProperty(minuteByToken)) {
