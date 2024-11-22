@@ -46,12 +46,12 @@ jobs:
           password: '${{ steps.auth.outputs.auth_token }}'
           registry: '${{ env.REGION }}-docker.pkg.dev'
 
-      - name: 'Build and Push backend Image to Artifact Registry'
-        run: |-
-          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}"
-          docker build -f apps/backend/Dockerfile -t "${DOCKER_TAG}" .
-          gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
-          docker push "${DOCKER_TAG}"
+      # - name: 'Build and Push backend Image to Artifact Registry'
+      #   run: |-
+      #     DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}"
+      #     docker build -f apps/backend/Dockerfile -t "${DOCKER_TAG}" .
+      #     gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
+      #     docker push "${DOCKER_TAG}"
 
       - name: 'Build and Push web Image to Artifact Registry'
         run: |-
