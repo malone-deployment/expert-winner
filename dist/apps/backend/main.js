@@ -382,7 +382,8 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors();
     await app.listen(PORT, HOST).then(() => {
-        console.log(`** Nest Live Development Server is listening on ${HOST}, open your browser on ${HOST}/ **`);
+        // tslint:disable-next-line:no-console
+        console.log(`** Nest Live Development Server is listening on ${HOST}}, open your browser on http://localhost:${PORT}/ **`);
     });
 }
 bootstrap();
