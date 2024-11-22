@@ -12,10 +12,10 @@ export function Index() {
     setIsSubmitting(true);
     // TODO: refactor URL use search params constructor
 
-    const requestUrl = `https://backend-image-422041495987.asia-southeast1.run.app/wifi?minuteByToken=${String(
-      token,
-    )}`;
-    console.log('token', typeof token);
+    const tokenString = String(token);
+
+    const requestUrl = `https://backend-image-422041495987.asia-southeast1.run.app/wifi?minuteByToken=${tokenString}`;
+    console.log('token', typeof tokenString);
     console.log(requestUrl, 'endpoint for minutebytoken=string');
     try {
       const response = await fetch(requestUrl);
