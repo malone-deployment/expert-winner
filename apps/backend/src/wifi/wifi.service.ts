@@ -30,7 +30,7 @@ export class WifiService {
     minuteByToken: Token,
   ): Promise<{ qrCode: string; url: string }> {
     const currentTimestamp = Date.now();
-    const id = crypto.randomUUID();
+    const id = globalThis.crypto.randomUUID();
     const wifiEntity = new WifiEntity();
 
     if (minutesByToken.hasOwnProperty(minuteByToken)) {
