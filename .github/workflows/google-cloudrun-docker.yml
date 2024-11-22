@@ -52,7 +52,6 @@ jobs:
       #     docker build -f apps/web/Dockerfile -t "${DOCKER_TAG}" .
       #     gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
       #     docker push "${DOCKER_TAG}"
-
       # - name: 'Deploy web Image to Cloud Run'
       #   run: |-
       #     gcloud run deploy "${{ env.WEB_SERVICE }}" \
@@ -61,12 +60,10 @@ jobs:
       #     --region "${{ env.REGION }}" \
       #     --service-account "${{ env.SERVICE_EMAIL }}" \
       #     --allow-unauthenticated
-
       # - name: 'Show output'
       #   run: |-
       #     echo "Cloud Run service deployed to:"
       #     echo "${{ steps.deploy.outputs.url }}"
-
       #BACKEND
       - name: 'Build and Push backend Image to Artifact Registry'
         run: |-
@@ -74,7 +71,6 @@ jobs:
           docker build -f apps/backend/Dockerfile -t "${DOCKER_TAG}" .
           gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
           docker push "${DOCKER_TAG}"
-
       - name: 'Deploy backend Image to Cloud Run and connect to Cloud SQL'
         run: |-
           gcloud run deploy "${{ env.BACKEND_SERVICE }}" \
