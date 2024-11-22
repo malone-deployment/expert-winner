@@ -25,6 +25,7 @@ export class WifiController {
 
   @Get()
   getToken(@Query('minuteByToken') token: Token) {
+    console.log(typeof token, token, 'token here');
     const wifiToken = new WifiTokenDTO(token);
 
     return this.wifiService.getToken(wifiToken.token);

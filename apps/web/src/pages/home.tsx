@@ -11,23 +11,17 @@ export function Index() {
   async function handleAmountCardClick(token: number) {
     setIsSubmitting(true);
     // TODO: refactor URL use search params constructor
-
-    const tokenString = String(token);
-
-    const requestUrl = `https://backend-image-422041495987.asia-southeast1.run.app/wifi?minuteByToken=${tokenString}`;
-    console.log('token', typeof tokenString);
-    console.log(requestUrl, 'endpoint for minutebytoken=string');
+    const requestUrl = `https://backend-image-422041495987.asia-southeast1.run.app/wifi?minuteByToken=${String(
+      token,
+    )}`;
     try {
       const response = await fetch(requestUrl);
       const { qrCode, url }: { qrCode: string; url: string } =
         await response.json();
-      console.log(qrCode, 'home page');
-      console.log(url, 'home page');
       localStorage.setItem('qrCode', JSON.stringify(qrCode));
       localStorage.setItem('url', JSON.stringify(url));
 
-      console.log('navigate disabled');
-      //   navigate('/generateqrcode');
+      navigate('/generateqrcode');
 
       setIsSubmitting(false);
     } catch (error: any) {
