@@ -9,7 +9,7 @@ import Countdown from 'react-countdown';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const API_URL =
-  'https://backend-image-422041495987.asia-southeast1.run.app/wifi';
+  'https://backend-service-422041495987.asia-southeast1.run.app/wifi';
 // const API_URL = "http://192.168.100.57:5173/wifi";
 
 type RentSessionData = {
