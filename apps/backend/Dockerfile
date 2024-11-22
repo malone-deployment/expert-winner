@@ -24,7 +24,7 @@ RUN npm install --only=production
 # Copy built application
 COPY --from=base /app/dist/apps/backend ./dist
 
-
+EXPOSE 8080
 
 # Start the application
 CMD ["node", "dist/main.js"]
