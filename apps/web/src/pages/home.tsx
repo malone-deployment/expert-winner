@@ -15,15 +15,17 @@ export function Index() {
     const requestUrl = `https://backend-image-422041495987.asia-southeast1.run.app/wifi?minuteByToken=${String(
       token,
     )}`;
+    console.log(requestUrl, 'endpoint for minutebytoken=string');
     try {
       const response = await fetch(requestUrl);
       const { qrCode, url }: { qrCode: string; url: string } =
         await response.json();
-      console.log(qrCode);
-      console.log(url);
+      console.log(qrCode, 'home page');
+      console.log(url, 'home page');
       localStorage.setItem('qrCode', JSON.stringify(qrCode));
       localStorage.setItem('url', JSON.stringify(url));
 
+      console.log('navigate disabled');
       //   navigate('/generateqrcode');
 
       setIsSubmitting(false);
