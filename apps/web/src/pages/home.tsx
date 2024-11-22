@@ -15,6 +15,7 @@ export function Index() {
     const requestUrl = `https://backend-image-422041495987.asia-southeast1.run.app/wifi?minuteByToken=${String(
       token,
     )}`;
+    console.log('token', typeof token);
     console.log(requestUrl, 'endpoint for minutebytoken=string');
     try {
       const response = await fetch(requestUrl);
