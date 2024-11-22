@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-const HOST = '0.0.0.0';
+const HOST = 'https://backend-image-422041495987.asia-southeast1.run.app/wifi';
 // 'https://backend-image-422041495987.asia-southeast1.run.app/wifi/ this is the right host base'
 const PORT = Number(process.env.PORT) || 8080;
 
@@ -10,7 +10,7 @@ async function bootstrap() {
   await app.listen(PORT, HOST).then(() => {
     // tslint:disable-next-line:no-console
     console.log(
-      `** Nest Live Development Server is listening on ${HOST}:${PORT}, open your browser on http://localhost:${PORT}/ **`,
+      `** Nest Live Development Server is listening on ${HOST}:${PORT}, open your browser on https://backend-image-422041495987.asia-southeast1.run.app/wifi:${PORT}/ **`,
     );
   });
 }
