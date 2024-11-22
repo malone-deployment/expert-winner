@@ -83,8 +83,7 @@ jobs:
           --region "${{ env.REGION }}" \
           --service-account "${{ env.SERVICE_EMAIL }}" \
           --allow-unauthenticated
-          --add-cloudsql-instances "rpi-hub-438905:asia-southeast1:postgresql" \
-          --set-env-vars DB_HOST=/cloudsql/rpi-hub-438905:asia-southeast1:postgresql,DB_PORT=8080,DB_USER=postgres,DB_PASSWORD='9DPx*:O=S3rDL.:l',DB_NAME=postgres
+          --add-cloudsql-instances "rpi-hub-438905:asia-southeast1:postgresql"
 
       # Build and deploy the BACKEND service to Cloud SQL
     #   - name: 'Deploy to Cloud Run'
