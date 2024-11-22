@@ -19,10 +19,12 @@ export function Index() {
       const response = await fetch(requestUrl);
       const { qrCode, url }: { qrCode: string; url: string } =
         await response.json();
+      console.log(qrCode);
+      console.log(url);
       localStorage.setItem('qrCode', JSON.stringify(qrCode));
       localStorage.setItem('url', JSON.stringify(url));
 
-      navigate('/generateqrcode');
+      //   navigate('/generateqrcode');
 
       setIsSubmitting(false);
     } catch (error: any) {

@@ -1,14 +1,14 @@
-import { Button } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Button } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function GenerateQR() {
   const [image, setImage] = useState<string | null>(null);
   const [url, setUrl] = useState<string | null>(null);
   const navigate = useNavigate();
   useEffect(() => {
-    const qrCodeLocalStorage = localStorage.getItem("qrCode");
-    const urlLocalStorage = localStorage.getItem("url");
+    const qrCodeLocalStorage = localStorage.getItem('qrCode');
+    const urlLocalStorage = localStorage.getItem('url');
     if (!qrCodeLocalStorage) return;
     if (!urlLocalStorage) return;
 
@@ -33,7 +33,7 @@ export function GenerateQR() {
               const { pathname, search } = new URL(url);
               const redirectUrl = `${pathname}${search}`;
 
-              localStorage.removeItem("rentSessionData");
+              localStorage.removeItem('rentSessionData');
               navigate(redirectUrl);
             }}
           >
