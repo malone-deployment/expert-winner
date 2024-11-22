@@ -21,7 +21,7 @@ export function Index() {
       localStorage.setItem('qrCode', JSON.stringify(qrCode));
       localStorage.setItem('url', JSON.stringify(url));
 
-      //   navigate('/generateqrcode');
+      navigate('/generateqrcode');
 
       setIsSubmitting(false);
     } catch (error: any) {
