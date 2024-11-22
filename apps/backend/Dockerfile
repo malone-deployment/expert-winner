@@ -18,7 +18,6 @@ RUN npx nx run backend:build
 
 
 
-
 # Production image
 FROM node:18-alpine AS production
 ENV PORT=8080
