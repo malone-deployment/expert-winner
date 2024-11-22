@@ -79,6 +79,7 @@ jobs:
         run: |-
           gcloud run deploy "${{ env.BACKEND_SERVICE }}" \
           --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}" \
+          --region "${{ env.REGION }}" \
           --add-cloudsql-instances rpi-hub-438905:asia-southeast1:postgresql
 
       # Build and deploy the BACKEND service to Cloud SQL
