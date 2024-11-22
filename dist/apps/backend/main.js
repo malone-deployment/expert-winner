@@ -376,14 +376,15 @@ var exports = __webpack_exports__;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __webpack_require__(1);
 const app_module_1 = __webpack_require__(2);
-const HOST = 'https://web-service-422041495987.asia-southeast1.run.app/wifi/fck';
+const HOST = '0.0.0.0';
+// 'https://backend-image-422041495987.asia-southeast1.run.app/wifi/ this is the right host base'
 const PORT = Number(process.env.PORT) || 8080;
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors();
     await app.listen(PORT, HOST).then(() => {
         // tslint:disable-next-line:no-console
-        console.log(`** Nest Live Development Server is listening on ${HOST}}, open your browser on http://localhost:${PORT}/ **`);
+        console.log(`** Nest Live Development Server is listening on ${HOST}:${PORT}, open your browser on http://localhost:${PORT}/ **`);
     });
 }
 bootstrap();
