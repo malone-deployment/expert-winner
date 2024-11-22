@@ -4,7 +4,7 @@ FROM node:18-alpine AS base
 # Set working directory
 WORKDIR /app
 
-# Install dependencies
+# Install dependenciess
 COPY . ./
 
 RUN npm install
