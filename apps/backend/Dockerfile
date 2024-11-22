@@ -2,8 +2,6 @@
 FROM node:18-alpine AS base
 
 
-ENV PORT=8080
-
 # Set working directory
 WORKDIR /app
 
