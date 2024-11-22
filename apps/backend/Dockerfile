@@ -1,6 +1,6 @@
 # Base image
 FROM node:18-alpine AS base
-
+ENV PORT 8080
 
 # Set working directory
 WORKDIR /app
@@ -24,7 +24,6 @@ RUN npm install --only=production
 
 # Copy built application
 COPY --from=base /app/dist/apps/backend ./dist
-
 
 
 # Start the application
