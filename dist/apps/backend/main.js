@@ -19,21 +19,26 @@ const common_1 = __webpack_require__(4);
 const typeorm_1 = __webpack_require__(5);
 const wifi_entity_1 = __webpack_require__(6);
 const wifi_module_1 = __webpack_require__(8);
+const config_1 = __webpack_require__(15);
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = tslib_1.__decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forRoot({
-                type: 'postgres',
-                host: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
-                port: 5432,
-                username: 'postgres',
-                database: 'postgres',
-                password: '9DPx*:O=S3rDL.:l',
-                entities: [wifi_entity_1.WifiEntity],
-                synchronize: true,
+            config_1.ConfigModule.forRoot(),
+            typeorm_1.TypeOrmModule.forRootAsync({
+                inject: [config_1.ConfigModule],
+                useFactory: (configService) => ({
+                    type: 'postgres',
+                    host: configService.get('PG_HOST'),
+                    port: configService.get('PG_PORT'),
+                    username: configService.get('PG_USER'),
+                    password: configService.get('PG_PASSWORD'),
+                    database: configService.get('PG_DATABASE'),
+                    entities: [wifi_entity_1.WifiEntity],
+                    synchronize: true,
+                }),
             }),
             wifi_module_1.WifiModule,
         ],
@@ -355,6 +360,12 @@ tslib_1.__decorate([
 /***/ ((module) => {
 
 module.exports = require("class-validator");
+
+/***/ }),
+/* 15 */
+/***/ ((module) => {
+
+module.exports = require("@nestjs/config");
 
 /***/ })
 /******/ 	]);
