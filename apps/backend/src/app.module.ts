@@ -2,31 +2,37 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WifiEntity } from './wifi/wifi.entity';
 import { WifiModule } from './wifi/wifi.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: [`.env`],
-      isGlobal: true,
-    }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get('PG_HOST'),
-        port: parseInt(configService.get('PG_PORT'), 10),
-        username: configService.get('PG_USER'),
-        database: configService.get('PG_DB'),
-        password: configService.get('PG_PASSWORD'),
-        entities: [WifiEntity],
-        autoLoadEntities: true,
-        synchronize: true,
-        logging: false,
-      }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.PG_HOST,
+      port: parseInt(process.env.PG_PORT, 10),
+      username: process.env.PG_USERNAME,
+      password: process.env.PG_PASSWORD,
+      database: process.env.PG_NAME,
+      entities: [WifiEntity],
+      synchronize: true,
     }),
     WifiModule,
   ],
 })
 export class AppModule {}
+
+// @Module({
+//     imports: [
+//       TypeOrmModule.forRoot({
+//         type: 'postgres',
+//         host: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
+//         port: 5432,
+//         username: 'postgres',
+//         database: 'postgres',
+//         password: '9DPx*:O=S3rDL.:l',
+//         entities: [WifiEntity],
+//         synchronize: true,
+//       }),
+//       WifiModule,
+//     ],
+//   })
+//   export class AppModule {}
