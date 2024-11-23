@@ -4,6 +4,10 @@
 tmp
 /out-tsc
 
+
+
+apps/backend/.env
+
 # dependencies
 node_modules
 
