@@ -23,7 +23,7 @@ RUN npm install --only=production
 
 # Copy built application
 COPY --from=base /app/dist/apps/backend ./dist
-COPY .env .env  
+COPY apps/backend/.env  ./ 
 
 
 
