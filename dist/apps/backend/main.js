@@ -27,11 +27,11 @@ exports.AppModule = AppModule = tslib_1.__decorate([
         imports: [
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
-                host: process.env.PG_HOST,
-                port: parseInt(process.env.PG_PORT, 10),
-                username: process.env.PG_USERNAME,
-                password: process.env.PG_PASSWORD,
-                database: process.env.PG_NAME,
+                host: '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql',
+                port: 5432,
+                username: 'postgres',
+                database: 'postgres',
+                password: '9DPx*:O=S3rDL.:l',
                 entities: [wifi_entity_1.WifiEntity],
                 synchronize: true,
             }),
