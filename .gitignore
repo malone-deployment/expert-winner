@@ -6,7 +6,7 @@ tmp
 
 
 
-apps/backend/.env
+# apps/backend/.env
 
 # dependencies
 node_modules
