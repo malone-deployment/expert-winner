@@ -7,19 +7,19 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.development.env',
+      envFilePath: [`.env.stage.${process.env.STAGE}`],
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        host: configService.get('PG_HOST'),
-        username: configService.get('PG_USER'),
-        password: configService.get('PG_PASSWORD'),
-        database: configService.get('PG_DB'),
-        port: configService.get('PG_PORT'),
         type: 'postgres',
+        host: configService.get('PG_HOST'),
+        port: configService.get('PG_PORT'),
+        username: configService.get('PG_USER'),
+        database: configService.get('PG_DB'),
+        password: configService.get('PG_PASSWORD'),
         entities: [WifiEntity],
         autoLoadEntities: true,
         synchronize: true,

@@ -27,19 +27,19 @@ exports.AppModule = AppModule = tslib_1.__decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({
-                envFilePath: '.development.env',
+                envFilePath: [`.env.stage.${process.env.STAGE}`],
                 isGlobal: true,
             }),
             typeorm_1.TypeOrmModule.forRootAsync({
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],
                 useFactory: async (configService) => ({
-                    host: configService.get('PG_HOST'),
-                    username: configService.get('PG_USER'),
-                    password: configService.get('PG_PASSWORD'),
-                    database: configService.get('PG_DB'),
-                    port: configService.get('PG_PORT'),
                     type: 'postgres',
+                    host: configService.get('PG_HOST'),
+                    port: configService.get('PG_PORT'),
+                    username: configService.get('PG_USER'),
+                    database: configService.get('PG_DB'),
+                    password: configService.get('PG_PASSWORD'),
                     entities: [wifi_entity_1.WifiEntity],
                     autoLoadEntities: true,
                     synchronize: true,
