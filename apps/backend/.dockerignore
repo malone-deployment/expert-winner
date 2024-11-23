@@ -1,7 +1,7 @@
-# Exclude unnecessary files and directories
-node_modules
-*.log
-dist
+# # Exclude unnecessary files and directories
+# node_modules
+# *.log
+# dist
 
-# Keep .env ignored by Git but allow it to be copied in Docker build
-!.env  # This line ensures that .env is not ignored for Docker build context
+# # Keep .env ignored by Git but allow it to be copied in Docker build
+# !.env  # This line ensures that .env is not ignored for Docker build context
