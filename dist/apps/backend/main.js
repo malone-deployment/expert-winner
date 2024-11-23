@@ -27,7 +27,7 @@ exports.AppModule = AppModule = tslib_1.__decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({
-                envFilePath: [`.env.stage.${process.env.STAGE}`],
+                envFilePath: [`.env`],
                 isGlobal: true,
             }),
             typeorm_1.TypeOrmModule.forRootAsync({
@@ -36,7 +36,7 @@ exports.AppModule = AppModule = tslib_1.__decorate([
                 useFactory: async (configService) => ({
                     type: 'postgres',
                     host: configService.get('PG_HOST'),
-                    port: configService.get('PG_PORT'),
+                    port: parseInt(configService.get('PG_PORT'), 10),
                     username: configService.get('PG_USER'),
                     database: configService.get('PG_DB'),
                     password: configService.get('PG_PASSWORD'),

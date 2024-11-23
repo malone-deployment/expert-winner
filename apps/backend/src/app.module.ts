@@ -7,7 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: [`.env.stage.${process.env.STAGE}`],
+      envFilePath: [`.env`],
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
@@ -16,7 +16,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get('PG_HOST'),
-        port: configService.get('PG_PORT'),
+        port: parseInt(configService.get('PG_PORT'), 10),
         username: configService.get('PG_USER'),
         database: configService.get('PG_DB'),
         password: configService.get('PG_PASSWORD'),
