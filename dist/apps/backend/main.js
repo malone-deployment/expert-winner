@@ -20,22 +20,28 @@ const typeorm_1 = __webpack_require__(5);
 const wifi_entity_1 = __webpack_require__(6);
 const wifi_module_1 = __webpack_require__(8);
 const config_1 = __webpack_require__(15);
+const config_schema_1 = __webpack_require__(16);
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = tslib_1.__decorate([
     (0, common_1.Module)({
         imports: [
-            config_1.ConfigModule.forRoot(),
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+                envFilePath: [`.env`],
+                validationSchema: config_schema_1.configValdidationSchema,
+            }),
             typeorm_1.TypeOrmModule.forRootAsync({
-                inject: [config_1.ConfigModule],
-                useFactory: (configService) => ({
+                imports: [config_1.ConfigModule],
+                inject: [config_1.ConfigService],
+                useFactory: async (configService) => ({
                     type: 'postgres',
                     host: configService.get('PG_HOST'),
                     port: configService.get('PG_PORT'),
-                    username: configService.get('PG_USER'),
-                    password: configService.get('PG_PASSWORD'),
+                    username: configService.get('PG_USERNAME'),
                     database: configService.get('PG_DATABASE'),
+                    password: configService.get('PG_PASSWORD'),
                     entities: [wifi_entity_1.WifiEntity],
                     synchronize: true,
                 }),
@@ -366,6 +372,32 @@ module.exports = require("class-validator");
 /***/ ((module) => {
 
 module.exports = require("@nestjs/config");
+
+/***/ }),
+/* 16 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.configValdidationSchema = void 0;
+const tslib_1 = __webpack_require__(3);
+const Joi = tslib_1.__importStar(__webpack_require__(17));
+exports.configValdidationSchema = Joi.object({
+    //   STAGE: Joi.string().required(),
+    DB_HOST: Joi.string().required(),
+    DB_PORT: Joi.number().default(5432).required(),
+    DB_USERNAME: Joi.string().required(),
+    DB_PASSWORD: Joi.string().required(),
+    DB_DATABASE: Joi.string().required(),
+    //   JWT_SECRET: Joi.string().required(),
+});
+
+
+/***/ }),
+/* 17 */
+/***/ ((module) => {
+
+module.exports = require("joi");
 
 /***/ })
 /******/ 	]);

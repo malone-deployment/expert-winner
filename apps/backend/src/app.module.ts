@@ -3,19 +3,25 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { WifiEntity } from './wifi/wifi.entity';
 import { WifiModule } from './wifi/wifi.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { configValdidationSchema } from './config.schema';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: [`.env`],
+      validationSchema: configValdidationSchema,
+    }),
     TypeOrmModule.forRootAsync({
-      inject: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get<string>('PG_HOST'),
-        port: configService.get<number>('PG_PORT'),
-        username: configService.get<string>('PG_USER'),
-        password: configService.get<string>('PG_PASSWORD'),
-        database: configService.get<string>('PG_DATABASE'),
+        host: configService.get('PG_HOST'),
+        port: configService.get('PG_PORT'),
+        username: configService.get('PG_USERNAME'),
+        database: configService.get('PG_DATABASE'),
+        password: configService.get('PG_PASSWORD'),
         entities: [WifiEntity],
         synchronize: true,
       }),
