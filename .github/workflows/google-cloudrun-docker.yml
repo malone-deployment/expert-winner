@@ -61,36 +61,25 @@ jobs:
       #     --service-account "${{ env.SERVICE_EMAIL }}" \
       #     --allow-unauthenticated
       # - name: 'Show output'
-      #   run: |-
-      #     echo "Cloud Run service deployed to:"
-      #     echo "${{ steps.deploy.outputs.url }}"
-      #BACKEND
-      # - name: 'Build and Push backend Image to Artifact Registry'
-      #   run: |-
-      #     DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}"
-      #     docker build -f apps/backend/Dockerfile -t "${DOCKER_TAG}" .
-      #     gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
-      #     docker push "${DOCKER_TAG}"
-      # - name: 'Deploy backend Image to Cloud Run and connect to Cloud SQL'
-        # run: |-
-        #   gcloud run deploy "${{ env.BACKEND_SERVICE }}" \
-        #   --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}" \
-        #   --region "${{ env.REGION }}" \
-        #   --add-cloudsql-instances rpi-hub-438905:asia-southeast1:postgresql
-
-
-     - name: 'Build and Push backend Image to Artifact Registry'
         run: |-
-          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}
-          docker build \
-          --build-arg DB_HOST=/cloudsql/rpi-hub-438905:asia-southeast1:postgresql \
-          --build-arg DB_PORT=5432 \
-          --build-arg DB_USER=postgres \
-          --build-arg DB_PASS=9DPx*:O=S3rDL.:l \
-          --build-arg DB_NAME=postgres \
-          -f apps/backend/Dockerfile -t "${DOCKER_TAG}" . 
-          gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
-          docker push "${DOCKER_TAG}"
+          echo "Cloud Run service deployed to:"
+          echo "${{ steps.deploy.outputs.url }}"
+      # BACKEND
+      
+
+
+      - name: 'Build and Push backend Image to Artifact Registry'
+          run: |-
+            DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+            docker build \
+            --build-arg DB_HOST=/cloudsql/rpi-hub-438905:asia-southeast1:postgresql \
+            --build-arg DB_PORT=5432 \
+            --build-arg DB_USER=postgres \
+            --build-arg DB_PASS=9DPx*:O=S3rDL.:l \
+            --build-arg DB_NAME=postgres \
+            -f apps/backend/Dockerfile -t "${DOCKER_TAG}" . 
+            gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
+            docker push "${DOCKER_TAG}"
 
 
       # - name: 'Deploy backend Image to Cloud Run and connect to Cloud SQL'
@@ -100,6 +89,116 @@ jobs:
       #     --region "${{ env.REGION }}" \
       #     --add-cloudsql-instances rpi-hub-438905:asia-southeast1:postgresql
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# name: 'Build and Deploy Postgres to Cloud Run'
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# env:
+#   PROJECT_ID: ${{ secrets.PROJECT_ID }} # Google Cloud project ID
+#   REGION: ${{ secrets.REGION }} # Google Cloud region
+#   SERVICE_EMAIL: ${{ secrets.SERVICE_EMAIL }} # Service account email
+#   WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }} # Workload Identity Provider
+#   GAR_REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }} # Artifact Registry repository
+
+#   BACKEND_SERVICE: 'backend-service' # Cloud Run service name
+#   WEB_SERVICE: 'web-service' # Cloud Run service name
+
+#   POSTGRES_IMAGE: 'postgres-image' # Docker image name
+#   BACKEND_IMAGE: 'backend-image'
+#   WEB_IMAGE: 'web-image'
+
+# jobs:
+#   deploy:
+#     runs-on: 'ubuntu-latest'
+
+#     permissions:
+#       contents: 'read'
+#       id-token: 'write'
+
+#     steps:
+#       - name: 'Checkout'
+#         uses: 'actions/checkout@v4'
+
+#       - id: 'auth'
+#         name: 'Authenticate to Google Cloud'
+#         uses: 'google-github-actions/auth@v2'
+#         with:
+#           project_id: '${{ env.PROJECT_ID }}'
+#           service_account: '${{ env.SERVICE_EMAIL }}'
+#           workload_identity_provider: '${{ env.WORKLOAD_IDENTITY_PROVIDER }}'
+
+#       - name: 'Docker Auth'
+#         uses: 'docker/login-action@v3'
+#         with:
+#           username: 'oauth2accesstoken'
+#           password: '${{ steps.auth.outputs.auth_token }}'
+#           registry: '${{ env.REGION }}-docker.pkg.dev'
+#         #WEB
+#       - name: 'Build and Push web Image to Artifact Registry'
+#         run: |-
+#           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.WEB_IMAGE }}:${{ github.sha }}"
+#           docker build -f apps/web/Dockerfile -t "${DOCKER_TAG}" .
+#           gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
+#           docker push "${DOCKER_TAG}"
+#       - name: 'Deploy web Image to Cloud Run'
+#         run: |-
+#           gcloud run deploy "${{ env.WEB_SERVICE }}" \
+#           --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.WEB_IMAGE }}:${{ github.sha }}" \
+#           --update-labels managed-by=github-actions,commit-sha="${{ github.sha }}" \
+#           --region "${{ env.REGION }}" \
+#           --service-account "${{ env.SERVICE_EMAIL }}" \
+#           --allow-unauthenticated
+#       - name: 'Show output'
+#         run: |-
+#           echo "Cloud Run service deployed to:"
+#           echo "${{ steps.deploy.outputs.url }}"
+#       # BACKEND
+#       - name: 'Build and Push backend Image to Artifact Registry'
+#         run: |-
+#           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}"
+#           docker build -f apps/backend/Dockerfile -t "${DOCKER_TAG}" .
+#           gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
+#           docker push "${DOCKER_TAG}"
+#       - name: 'Deploy backend Image to Cloud Run and connect to Cloud SQL'
+#         run: |-
+#           gcloud run deploy "${{ env.BACKEND_SERVICE }}" \
+#           --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}" \
+#           --region "${{ env.REGION }}" \
+#           --add-cloudsql-instances rpi-hub-438905:asia-southeast1:postgresql
+
+
+#      - name: 'Build and Push backend Image to Artifact Registry'
+#         run: |-
+#           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+#           docker build \
+#           --build-arg DB_HOST=/cloudsql/rpi-hub-438905:asia-southeast1:postgresql \
+#           --build-arg DB_PORT=5432 \
+#           --build-arg DB_USER=postgres \
+#           --build-arg DB_PASS=9DPx*:O=S3rDL.:l \
+#           --build-arg DB_NAME=postgres \
+#           -f apps/backend/Dockerfile -t "${DOCKER_TAG}" . 
+#           gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
+#           docker push "${DOCKER_TAG}"
 
 
 
