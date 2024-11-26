@@ -14,7 +14,7 @@ export class WifiController {
 
   @Get('fck')
   fck() {
-    return 'fck this fck';
+    return 'fck this fck this shit';
   }
 
   @Put(':id')
