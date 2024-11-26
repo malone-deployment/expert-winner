@@ -29,11 +29,6 @@ RUN npm install --only=production
 # Copy built application from the base stage
 COPY --from=base /app/dist/apps/backend ./dist
 
-# Copy other necessary files (e.g., environment files, assets, etc.)
-# COPY . .
-
-# Set environment variable for Cloud SQL (optional, can be passed during deploy)
-# ENV NODE_ENV=production
 
 # Start the application
 CMD ["node", "dist/main.js"]
