@@ -60,10 +60,10 @@ jobs:
           gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
           docker push "${DOCKER_TAG}"
         # run: |-
-          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.WEB_IMAGE }}:${{ github.sha }}"
-          docker build -f apps/web/Dockerfile -t "${DOCKER_TAG}" .
-          gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
-          docker push "${DOCKER_TAG}"
+        # DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.WEB_IMAGE }}:${{ github.sha }}"
+        # docker build -f apps/web/Dockerfile -t "${DOCKER_TAG}" .
+        # gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
+        # docker push "${DOCKER_TAG}"
       # - name: 'Deploy web Image to Cloud Run'
       #   run: |-
       #     gcloud run deploy "${{ env.WEB_SERVICE }}" \
