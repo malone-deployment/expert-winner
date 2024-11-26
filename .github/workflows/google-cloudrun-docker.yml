@@ -65,15 +65,43 @@ jobs:
       #     echo "Cloud Run service deployed to:"
       #     echo "${{ steps.deploy.outputs.url }}"
       #BACKEND
-      - name: 'Build and Push backend Image to Artifact Registry'
+      # - name: 'Build and Push backend Image to Artifact Registry'
+      #   run: |-
+      #     DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}"
+      #     docker build -f apps/backend/Dockerfile -t "${DOCKER_TAG}" .
+      #     gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
+      #     docker push "${DOCKER_TAG}"
+      # - name: 'Deploy backend Image to Cloud Run and connect to Cloud SQL'
+        # run: |-
+        #   gcloud run deploy "${{ env.BACKEND_SERVICE }}" \
+        #   --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}" \
+        #   --region "${{ env.REGION }}" \
+        #   --add-cloudsql-instances rpi-hub-438905:asia-southeast1:postgresql
+
+
+     - name: 'Build and Push backend Image to Artifact Registry'
         run: |-
-          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}"
-          docker build -f apps/backend/Dockerfile -t "${DOCKER_TAG}" .
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+          docker build \
+          --build-arg DB_HOST=/cloudsql/rpi-hub-438905:asia-southeast1:postgresql \
+          --build-arg DB_PORT=5432 \
+          --build-arg DB_USER=postgres \
+          --build-arg DB_PASS=9DPx*:O=S3rDL.:l \
+          --build-arg DB_NAME=postgres \
+          -f apps/backend/Dockerfile -t "${DOCKER_TAG}" . 
           gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
           docker push "${DOCKER_TAG}"
-      - name: 'Deploy backend Image to Cloud Run and connect to Cloud SQL'
-        run: |-
-          gcloud run deploy "${{ env.BACKEND_SERVICE }}" \
-          --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}" \
-          --region "${{ env.REGION }}" \
-          --add-cloudsql-instances rpi-hub-438905:asia-southeast1:postgresql
+
+
+      # - name: 'Deploy backend Image to Cloud Run and connect to Cloud SQL'
+      #   run: |-
+      #     gcloud run deploy "${{ env.BACKEND_SERVICE }}" \
+      #     --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}" \
+      #     --region "${{ env.REGION }}" \
+      #     --add-cloudsql-instances rpi-hub-438905:asia-southeast1:postgresql
+
+
+
+
+   
+
