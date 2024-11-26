@@ -27,11 +27,11 @@ exports.AppModule = AppModule = tslib_1.__decorate([
         imports: [
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
-                host: process.env.INSTANCE_UNIX_SOCKET, // Cloud SQL instance connection
-                port: parseInt(process.env.DB_PORT, 10),
-                username: process.env.DB_USER,
-                password: process.env.DB_PASS,
-                database: process.env.DB_NAME,
+                host: process.env.POSTGRES_INSTANCE_UNIX_SOCKET, // Cloud SQL instance connection
+                port: parseInt(process.env.POSTGRES_DB_PORT, 10),
+                username: process.env.POSTGRES_DB_USER,
+                password: process.env.POSTGRES_DB_PASS,
+                database: process.env.POSTGRES_DB_NAME,
                 entities: [wifi_entity_1.WifiEntity],
                 synchronize: true, // Set to false in production for safety
             }),

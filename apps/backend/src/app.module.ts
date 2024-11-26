@@ -7,11 +7,11 @@ import { WifiModule } from './wifi/wifi.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.INSTANCE_UNIX_SOCKET, // Cloud SQL instance connection
-      port: parseInt(process.env.DB_PORT, 10),
-      username: process.env.DB_USER,
-      password: process.env.DB_PASS,
-      database: process.env.DB_NAME,
+      host: process.env.POSTGRES_INSTANCE_UNIX_SOCKET, // Cloud SQL instance connection
+      port: parseInt(process.env.POSTGRES_DB_PORT, 10),
+      username: process.env.POSTGRES_DB_USER,
+      password: process.env.POSTGRES_DB_PASS,
+      database: process.env.POSTGRES_DB_NAME,
       entities: [WifiEntity],
       synchronize: true, // Set to false in production for safety
     }),
