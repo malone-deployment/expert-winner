@@ -12,12 +12,11 @@ env:
   WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }} # Workload Identity Provider
   GAR_REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }} # Artifact Registry repository
 
+  BACKEND_IMAGE: 'backend-image' # backend image name
+  WEB_IMAGE: 'web-image' # web image name
+
   BACKEND_SERVICE: 'backend-service' # Cloud Run service name
   WEB_SERVICE: 'web-service' # Cloud Run service name
-
-  POSTGRES_IMAGE: 'postgres-image' # Docker image name
-  BACKEND_IMAGE: 'backend-image'
-  WEB_IMAGE: 'web-image'
 
   POSTGRES_CLOUDSQL_INSTANCE: ${{ secrets.POSTGRES_CLOUDSQL_INSTANCE }}
   POSTGRES_INSTANCE_UNIX_SOCKET: ${{ secrets.POSTGRES_INSTANCE_UNIX_SOCKET }}
@@ -54,39 +53,25 @@ jobs:
           password: '${{ steps.auth.outputs.auth_token }}'
           registry: '${{ env.REGION }}-docker.pkg.dev'
         #WEB
-      # - name: 'Build and Push web Image to Artifact Registry'
-      #   run: |-
-      #     DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.WEB_IMAGE }}:${{ github.sha }}"
-      #     docker build -f apps/web/Dockerfile -t "${DOCKER_TAG}" .
-      #     gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
-      #     docker push "${DOCKER_TAG}"
-      # - name: 'Deploy web Image to Cloud Run'
-      #   run: |-
-      #     gcloud run deploy "${{ env.WEB_SERVICE }}" \
-      #     --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.WEB_IMAGE }}:${{ github.sha }}" \
-      #     --update-labels managed-by=github-actions,commit-sha="${{ github.sha }}" \
-      #     --region "${{ env.REGION }}" \
-      #     --service-account "${{ env.SERVICE_EMAIL }}" \
-      #     --allow-unauthenticated
-      # - name: 'Show output'
-      #   run: |-
-      #     echo "Cloud Run service deployed to:"
-      #     echo "${{ steps.deploy.outputs.url }}"
+      - name: 'Build and Push web Image to Artifact Registry'
+        run: |-
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.WEB_IMAGE }}:${{ github.sha }}"
+          docker build -f apps/web/Dockerfile -t "${DOCKER_TAG}" .
+          gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
+          docker push "${DOCKER_TAG}"
+      - name: 'Deploy web Image to Cloud Run'
+        run: |-
+          gcloud run deploy "${{ env.WEB_SERVICE }}" \
+          --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.WEB_IMAGE }}:${{ github.sha }}" \
+          --update-labels managed-by=github-actions,commit-sha="${{ github.sha }}" \
+          --region "${{ env.REGION }}" \
+          --service-account "${{ env.SERVICE_EMAIL }}" \
+          --allow-unauthenticated
+      - name: 'Show output'
+        run: |-
+          echo "Cloud Run service deployed to:"
+          echo "${{ steps.deploy.outputs.url }}"
       # BACKEND
-
-      # - name: 'Build and Push backend Image to Artifact Registry'
-      #   run: |-
-      #     DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}"
-      #     docker build -f apps/backend/Dockerfile -t "${DOCKER_TAG}" .
-      #     gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
-      #     docker push "${DOCKER_TAG}"
-      # - name: 'Deploy backend Image to Cloud Run and connect to Cloud SQL'
-      #   run: |-
-      #     gcloud run deploy "${{ env.BACKEND_SERVICE }}" \
-      #     --image "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}" \
-      #     --region "${{ env.REGION }}" \
-      #     --add-cloudsql-instances rpi-hub-438905:asia-southeast1:postgresql
-
       - name: 'Build and Push backend Image to Artifact Registry'
         run: |-
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY_NAME }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}"

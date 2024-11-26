@@ -33,7 +33,7 @@ COPY --from=base /app/dist/apps/backend ./dist
 # COPY . .
 
 # Set environment variable for Cloud SQL (optional, can be passed during deploy)
-ENV NODE_ENV=production
+# ENV NODE_ENV=production
 
 # Start the application
 CMD ["node", "dist/main.js"]
