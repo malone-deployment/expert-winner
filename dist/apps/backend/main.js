@@ -27,8 +27,7 @@ exports.AppModule = AppModule = tslib_1.__decorate([
         imports: [
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
-                host: process.env.INSTANCE_UNIX_SOCKET ||
-                    '/cloudsql/rpi-hub-438905:asia-southeast1:postgresql', // Cloud SQL instance connection
+                host: process.env.INSTANCE_UNIX_SOCKET, // Cloud SQL instance connection
                 port: 5432, // Default PostgreSQL port
                 username: process.env.DB_USER,
                 password: process.env.DB_PASS,
