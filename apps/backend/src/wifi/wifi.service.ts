@@ -40,7 +40,7 @@ export class WifiService {
 
       try {
         const baseUrl =
-          'https://web-service-422041495987.asia-southeast1.run.app';
+          'https://qr-code-web-service-422041495987.asia-southeast1.run.app';
         // const baseUrl = 'http://192.168.100.57:5173';
         // console.log({ baseUrl });
         const timeoutRedirectUrl = new URL(
