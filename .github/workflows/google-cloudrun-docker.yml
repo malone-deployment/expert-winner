@@ -1,3 +1,40 @@
+# This workflow build and push a Docker container to Google Artifact Registry
+# and deploy it on Cloud Run when a commit is pushed to the "main"
+# branch.
+#
+# To configure this workflow:
+#
+# 1. Enable the following Google Cloud APIs:
+#
+#    - Artifact Registry (artifactregistry.googleapis.com)
+#    - Cloud Run (run.googleapis.com)
+#    - IAM Credentials API (iamcredentials.googleapis.com)
+#
+#    You can learn more about enabling APIs at
+#    https://support.google.com/googleapi/answer/6158841.
+#
+# 2. Create and configure a Workload Identity Provider for GitHub:
+#    https://github.com/google-github-actions/auth#preferred-direct-workload-identity-federation.
+
+# 2.5 Add another config
+#      gcloud iam service-accounts add-iam-policy-binding ${SERVICE EMAIL}
+#      --member="principalSet://iam.googleapis.com/${WORK IDENTITY PROVIDER}/attribute.repository/${ORG_NAME/REPO_NAME}"
+#      --role="roles/iam.workloadIdentityUser"
+
+#
+#
+#
+#    Depending on how you authenticate, you will need to grant an IAM principal
+#    permissions on Google Cloud:
+#
+#    - Artifact Registry Administrator (roles/artifactregistry.admin)
+#    - Cloud Run Developer (roles/run.developer)
+#
+#    You can learn more about setting IAM permissions at
+#    https://cloud.google.com/iam/docs/manage-access-other-resources
+#
+# 3. Change the values in the "env" block to match your values.
+
 name: 'Build and Deploy Postgres to Cloud Run and connect to Cloud SQL'
 
 on:
@@ -12,11 +49,11 @@ env:
   WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }} # Workload Identity Provider
   GAR_REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }} # Artifact Registry repository
 
-  BACKEND_IMAGE: 'backend-image' # backend image name
-  WEB_IMAGE: 'web-image' # web image name
+  BACKEND_IMAGE: 'qr-code-backend-image' # backend image name
+  WEB_IMAGE: 'qr-code-web-image' # web image name
 
-  BACKEND_SERVICE: 'backend-service' # Cloud Run service name
-  WEB_SERVICE: 'web-service' # Cloud Run service name
+  BACKEND_SERVICE: 'qr-code-backend-service' # Cloud Run service name
+  WEB_SERVICE: 'qr-code-web-service' # Cloud Run service name
 
   POSTGRES_CLOUDSQL_INSTANCE: ${{ secrets.POSTGRES_CLOUDSQL_INSTANCE }}
   POSTGRES_INSTANCE_UNIX_SOCKET: ${{ secrets.POSTGRES_INSTANCE_UNIX_SOCKET }}
